@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { Link, useLocation } from "react-router-dom";
 import logo from "../assets/images/logoicon.png"
-import { BookOpen, Home, Info, Mail, Package, User } from "lucide-react"
+import { BookOpen, Home, Info, Mail, Menu, Package, User, X } from "lucide-react"
 import { FaOpencart } from "react-icons/fa"
 import { useCart } from "../CartContext/useCart";
 
@@ -103,11 +103,51 @@ const Navbar = () => {
                     {/* mobile menu */}
                     <div className="md:hidden flex items-center">
                         <button onClick={() => setIsopen(!isOpen)} className="relative group p-1">
-                            <div className="absolute -inset-2 bg-linear-to-r from-blue-500 to-indigo-600 rounded-full opacity-0 blur-md group-hover:opacity-30 transition-opacity duration-500"/>
+                            <div className="absolute -inset-2 bg-linear-to-r from-blue-500 to-indigo-600 rounded-full opacity-0 blur-md group-hover:opacity-30 transition-opacity duration-500" />
+                            <div className="relative">
+                                {isOpen ?
+                                    <X className="relative h-6 w-6 text-gray-600 z-10" />
+                                    : <Menu className="relative group p-1" />
+                                }
+                            </div>
                         </button>
                     </div>
                 </div>
             </div>
+            {/* Menu mobile navigation */}
+            {isOpen && (
+                <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-lg z-40">
+                    <div className="container mx-auto px-4 py-4">
+                        <div className="flex flex-col space-y-1">
+                            {navItems.map((item) => {
+                                const isActive = location.pathname === item.path;
+                                return (
+                                    <Link key={item.name} to={item.path} onClick={() => setIsopen(false)} className={`flex items-center px-4 py-3 rounded-lg ${isActive ? `bg-linear-to-r ${item.color}/10` : "hover:bg-gray-100"
+                                        } transition-colors`}>
+                                            <item.icon className={`h-5 w-5 ${isActive ? `text-${item.color.split('-')[1]}-500` : "text-gray-600"}`} />
+                                            <span className={`ml-3 ${isActive ? `text-${item.color.split('-')[1]}-600 font-medium` : "text-gray-600"}`}>
+                                                {item.name}
+                                            </span>
+                                    </Link>
+                                )
+                            })}
+                            <div className="flex justify-between items-center mt-4">
+                                <Link to="/cart" className="relative group p-2" onClick={()=> setIsopen(false)}>
+                                    <FaOpencart className="h-5 w-5 text-gray-600 group-hover:text-amber-600" />
+                                    {totalQuantity > 0 && (
+                                        <span className="absolute top-0 right-0 -mt-1 -mr-1 w-5 h-5 flex items-center justify-center text-[10px] font-bold text-white bg-linear-to-r from-amber-500 to-orange-600 rounded-full">
+                                            {totalQuantity}
+                                        </span>
+                                    )}
+                                </Link>
+                                <Link to="login" className="p-2 group" onClick={() => setIsopen(false)}>
+                                    <User className="h-5 w-5 text-gray-600 group-hover:text-emerald-600" />
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </nav>
     )
 }
