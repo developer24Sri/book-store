@@ -89,7 +89,9 @@ const Navbar = () => {
                             <div className="relative">
                                 <FaOpencart className="relative h-5 w-5 text-gray-600 group-hover:text-amber-600 transition-colors duration-300 z-10" />
                                 {totalQuantity > 0 && (
-                                    <span className="absolute -top-3.5 -right-3.5 flex items-center justify-center w-5 h-5 bg-linear-to-r from-amber-500 to-orange-600 text-[10px] font-bold text-white rounded-full"></span>
+                                    <span className="absolute -top-3.5 -right-3.5 flex items-center justify-center w-5 h-5 bg-linear-to-r from-amber-500 to-orange-600 text-[10px] font-bold text-white rounded-full">
+                                        {totalQuantity}
+                                    </span>
                                 )}
                             </div>
                         </Link>

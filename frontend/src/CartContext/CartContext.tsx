@@ -1,7 +1,7 @@
 import { createContext, type Dispatch} from "react"
 
 // defining the shape of an single item:
-interface CartItem {
+export interface CartItem {
     id: string | number,
     source: string,
     quantity: number,
@@ -19,7 +19,7 @@ type CartAction =
  | {type: "DECREMENT"; payload: {id: string | number; source?: string}}
  | {type: "REMOVE_ITEM"; payload: {id: string | number; source?: string}}
 
- interface CartContextType {
+ export interface CartContextType {
     state: CartState,
     dispatch: Dispatch<CartAction>
  }
