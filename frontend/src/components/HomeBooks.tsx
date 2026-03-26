@@ -1,9 +1,10 @@
-import { Minus, Plus, ShoppingCart, Star } from "lucide-react"
+import { ArrowRight, Minus, Plus, ShoppingCart, Star } from "lucide-react"
 import { useCart } from "../CartContext/useCart"
 import HB1 from "../assets/images/HB1.png"
 import HB2 from "../assets/images/HB2.png"
 import HB3 from "../assets/images/HB3.png"
 import HB4 from "../assets/images/HB4.png"
+import { Link } from "react-router-dom"
 
 const HomeBooks = () => {
 
@@ -32,11 +33,11 @@ const HomeBooks = () => {
                         <div className="h-1 w-20 bg-linear-to-r from-[#43C6AC] to-[#F8FFAE] rounded-full mx-auto" />
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:lg:grid-cols-4 gap-8">
                         {hbbooks.map((book) => {
                             const item = inCart(book.id)
                             return (
-                                <div key={book.id} className="group relative">
+                                <div key={book.id} className="group grid grid-rows-[18rem_auto_1fr_auto_auto] gap-2 relative p-4 border rounded-2xl">
                                     <div className="relative h-72 overflow-hidden rounded-xl border-4 border-[#43C6AC]/20 mb-4">
                                         <img src={book.image} alt={book.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                                         <div className="absolute top-2 right-2 bg-white/90 px-3 py-1 rounded-full flex items-center">
@@ -53,22 +54,28 @@ const HomeBooks = () => {
                                     {item ? (
                                         <div className="flex items-center justify-between bg-[#43C6AC]/10 px-4 py-2 rounded-lg">
                                             <button onClick={() => handleDec(book.id)} className="text-[#1A237E] hover:text-[#43C6AC] p-1 md:p-1.5">
-                                                    <Minus className="h-5 w-5" />
-                                                </button>
-                                                <span className="tex-gray-700">{item.quantity}</span>
-                                                <button onClick={() => handleInc(book.id)} className="text-[#1A237E] hover:text-[#43C6AC] p-1 md:p-1.5">
-                                                    <Plus className="h-5 w-5" />
-                                                </button>
+                                                <Minus className="h-5 w-5" />
+                                            </button>
+                                            <span className="tex-gray-700">{item.quantity}</span>
+                                            <button onClick={() => handleInc(book.id)} className="text-[#1A237E] hover:text-[#43C6AC] p-1 md:p-1.5">
+                                                <Plus className="h-5 w-5" />
+                                            </button>
                                         </div>
                                     ) : (
                                         <button onClick={() => handleAdd(book)} className="w-full flex items-center cursor-pointer justify-center gap-2 px-4 py-2 bg-linear-to-r from-[#43C6AC] to-[#F8FFAE] text-black rounded-lg hover:shadow-lg transition-all">
-                                       <ShoppingCart className="h-5 w-5" />
-                                       <span>Add to Cart</span>
-                                       </button>
+                                            <ShoppingCart className="h-5 w-5" />
+                                            <span>Add to Cart</span>
+                                        </button>
                                     )}
                                 </div>
                             )
                         })}
+                    </div>
+                    <div className="flex justify-center mt-12">
+                        <Link to='/books' className="group inline-flex items-center justify-center px-6 py-3 rounded-full border-2 border-[#43C6AC] text-[#43C6AC] hover:bg-[#43C6AC]/10 transition-all">
+                            <span>View All Books</span>
+                            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                        </Link>
                     </div>
                 </div>
             </div>
