@@ -2,13 +2,13 @@ import { createContext, type Dispatch } from "react"
 
 // defining the shape of an single item:
 export interface CartItem {
-    id: string | number,
+    id: number,
     source: string | number,
     quantity: number,
     title: string,
     author: string,
     price: number,
-    image: string | { default: string }
+    image: string | { default: string },
 }
 
 // defining the state shape:
