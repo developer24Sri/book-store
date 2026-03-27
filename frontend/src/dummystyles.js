@@ -9,17 +9,17 @@ export const navbarStyles = {
 
   container: "container mx-auto px-4 md:px-4 md:text-xs",
   logoContainer: "flex items-center",
-  logoGradient: "absolute -inset-3 rounded-full opacity-0 blur-xl group-hover:opacity-30 transition-opacity bg-gradient-to-r from-[#43C6AC] to-[#F8FFAE]",
+  logoGradient: "absolute -inset-3 rounded-full opacity-0 blur-xl group-hover:opacity-30 transition-opacity bg-linear-to-r from-[#43C6AC] to-[#F8FFAE]",
   logoImage: "h-8 w-8 rounded-full z-10",
-  logoText: "text-xl font-bold bg-gradient-to-r from-[#43C6AC] to-[#2B5876] bg-clip-text text-transparent",
-  logoUnderline: "h-0.5 w-0 bg-gradient-to-r from-[#43C6AC] to-[#F8FFAE] group-hover:w-full transition-all duration-500",
+  logoText: "text-xl font-bold bg-linear-to-r from-[#43C6AC] to-[#2B5876] bg-clip-text text-transparent",
+  logoUnderline: "h-0.5 w-0 bg-linear-to-r from-[#43C6AC] to-[#F8FFAE] group-hover:w-full transition-all duration-500",
 
   desktopNavWrapper: "hidden md:flex items-center space-x-1",
 
   navLink: "relative group px-5 py-3.5 rounded-lg transition-all duration-300 overflow-hidden",
 
   navIconWrapper: (color) =>
-    `absolute -inset-1 bg-gradient-to-r ${color} rounded-full opacity-0 blur group-hover:opacity-30 transition-opacity duration-500`,
+    `absolute -inset-1 bg-linear-to-r ${color} rounded-full opacity-0 blur group-hover:opacity-30 transition-opacity duration-500`,
 
   navIcon: (isActive) =>
     `relative h-5 w-5 ${isActive ? "text-white" : "text-gray-600 group-hover:text-white"} transition-colors duration-300 z-10`,
@@ -27,34 +27,34 @@ export const navbarStyles = {
   navText: (isActive, color) =>
     `ml-2 ${
       isActive
-        ? `bg-gradient-to-r ${color} bg-clip-text text-transparent font-medium`
+        ? `bg-linear-to-r ${color} bg-clip-text text-transparent font-medium`
         : "text-gray-600 group-hover:text-gray-900"
     }`,
 
   navUnderline: (color) =>
-    `absolute bottom-0 left-0 h-0.5 w-full bg-gradient-to-r ${color}`,
+    `absolute bottom-0 left-0 h-0.5 w-full bg-linear-to-r ${color}`,
 
   rightIconsWrapper: "hidden md:flex items-center space-x-5",
 
   cartWrapper: "relative group",
-  cartGradient: "absolute -inset-2 bg-gradient-to-r from-amber-500 to-orange-600 rounded-full opacity-0 blur-md group-hover:opacity-30 transition-opacity duration-500",
+  cartGradient: "absolute -inset-2 bg-linear-to-r from-amber-500 to-orange-600 rounded-full opacity-0 blur-md group-hover:opacity-30 transition-opacity duration-500",
   cartIcon: "relative h-5 w-5 text-gray-600 group-hover:text-amber-600 transition-colors duration-300 z-10",
   cartBadge:
-    "absolute top-[-14px] right-[-14px] flex items-center justify-center w-5 h-5 bg-gradient-to-r from-amber-500 to-orange-600 text-[10px] font-bold text-white rounded-full",
+    "absolute top-[-14px] right-[-14px] flex items-center justify-center w-5 h-5 bg-linear-to-r from-amber-500 to-orange-600 text-[10px] font-bold text-white rounded-full",
 
   loginWrapper: "relative group",
-  loginGradient: "absolute -inset-2 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full opacity-0 blur-md group-hover:opacity-30 transition-opacity duration-500",
+  loginGradient: "absolute -inset-2 bg-linear-to-r from-emerald-500 to-teal-600 rounded-full opacity-0 blur-md group-hover:opacity-30 transition-opacity duration-500",
   loginIcon: "relative h-5 w-5 text-gray-600 group-hover:text-emerald-600 transition-colors duration-300 z-10",
 
   menuBtn: "relative group p-1",
-  menuGradient: "absolute -inset-2 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full opacity-0 blur-md group-hover:opacity-30 transition-opacity duration-500",
+  menuGradient: "absolute -inset-2 bg-linear-to-r from-blue-500 to-indigo-600 rounded-full opacity-0 blur-md group-hover:opacity-30 transition-opacity duration-500",
   menuIcon: "relative h-6 w-6 text-gray-600 z-10",
 
   mobileMenu: "md:hidden absolute top-full left-0 right-0 bg-white shadow-lg z-40",
   mobileContainer: "container mx-auto px-4 py-4",
   mobileNavItem: (isActive, color) =>
     `flex items-center px-4 py-3 rounded-lg ${
-      isActive ? `bg-gradient-to-r ${color}/10` : "hover:bg-gray-100"
+      isActive ? `bg-linear-to-r ${color}/10` : "hover:bg-gray-100"
     } transition-colors`,
 
   mobileNavIcon: (isActive, color) =>
@@ -65,7 +65,7 @@ export const navbarStyles = {
 
   mobileIconRow: "flex justify-between items-center mt-4",
   mobileCartBadge:
-    "absolute top-0 right-0 -mt-1 -mr-1 w-5 h-5 flex items-center justify-center text-[10px] font-bold text-white bg-gradient-to-r from-amber-500 to-orange-600 rounded-full",
+    "absolute top-0 right-0 -mt-1 -mr-1 w-5 h-5 flex items-center justify-center text-[10px] font-bold text-white bg-linear-to-r from-amber-500 to-orange-600 rounded-full",
     
       // Update these functions:
   mobileNavIcon: (isActive, color) => {
@@ -87,7 +87,7 @@ export const navbarStyles = {
 //banner
 
 export const container =
-  "min-h-screen flex items-center justify-center px-4 pt-20 md:pt-29 pb-12 relative bg-gradient-to-br from-[#43C6AC]/90 to-[#2B5876]/90";
+  "min-h-screen flex items-center justify-center px-4 pt-20 md:pt-29 pb-12 relative bg-linear-to-br from-[#43C6AC]/90 to-[#2B5876]/90";
 
 export const glassBox =
   "backdrop-blur-2xl bg-white/95 rounded-xl md:rounded-[2rem] shadow-lg md:shadow-2xl max-w-7xl w-full mx-4 p-6 md:p-8 lg:p-12 relative overflow-hidden";
@@ -97,7 +97,7 @@ export const geometricOverlay = "absolute inset-0 opacity-10 pointer-events-none
 export const wordWrapper = "relative h-8 md:h-10 overflow-hidden";
 
 export const wordClass =
-  "absolute text-2xl sm:text-3xl font-medium text-transparent bg-clip-text bg-gradient-to-r from-[#2B5876] to-[#43C6AC] transition-all duration-500";
+  "absolute text-2xl sm:text-3xl font-medium text-transparent bg-clip-text bg-linear-to-r from-[#2B5876] to-[#43C6AC] transition-all duration-500";
 
 export const headerText =
   "text-4xl sm:text-5xl md:text-6xl font-bold leading-tight";
@@ -116,7 +116,7 @@ export const inputField =
   "w-full pl-12 md:pl-14 pr-4 md:pr-6 py-3 md:py-4 bg-transparent border-0 focus:ring-0 text-gray-800 placeholder-gray-400 text-base md:text-lg font-medium";
 
 export const searchButton =
-  "px-6 md:px-8 py-3 md:py-4 bg-gradient-to-r from-[#2B5876] to-[#43C6AC] text-white rounded-lg md:rounded-xl font-medium hover:shadow-lg transition-all duration-300 shadow-md flex items-center gap-2 justify-center hover:-translate-y-0.5 text-sm md:text-base";
+  "px-6 md:px-8 py-3 md:py-4 bg-linear-to-r from-[#2B5876] to-[#43C6AC] text-white rounded-lg md:rounded-xl font-medium hover:shadow-lg transition-all duration-300 shadow-md flex items-center gap-2 justify-center hover:-translate-y-0.5 text-sm md:text-base";
 
 export const statsContainer = "flex flex-wrap gap-4 md:gap-6 pt-4 md:pt-6";
 
@@ -129,13 +129,13 @@ export const statLabel = "text-gray-600 text-xs md:text-sm";
 export const imageSection = "relative group flex justify-center mt-8 lg:mt-0";
 
 export const imageWrapper =
-  "relative w-full max-w-md lg:max-w-lg aspect-square bg-gradient-to-br from-white/20 to-[#F8FFAE]/10 rounded-xl md:rounded-2xl overflow-hidden";
+  "relative w-full max-w-md lg:max-w-lg aspect-square bg-linear-to-br from-white/20 to-[#F8FFAE]/10 rounded-xl md:rounded-2xl overflow-hidden";
 
 export const imageStyle =
   "w-full h-full object-contain object-center transform group-hover:scale-[1.02] transition-transform duration-500";
 
 export const overlayEffect =
-  "absolute inset-0 mix-blend-overlay bg-gradient-to-t from-[#2B5876]/10 to-transparent";
+  "absolute inset-0 mix-blend-overlay bg-linear-to-t from-[#2B5876]/10 to-transparent";
 
 export const scrollTextSection = "mt-8 md:mt-12 border-t border-gray-100 pt-4 md:pt-6";
 
@@ -155,7 +155,7 @@ export const ourBestSellersStyles = {
   headerWrapper: "flex flex-col md:flex-row justify-between items-start md:items-center mb-8 md:mb-12 gap-4 md:gap-6",
   headerText: "space-y-1 md:space-y-2",
   title: "text-3xl md:text-4xl font-bold text-gray-900",
-  gradientText: "bg-gradient-to-r from-[#1A237E] to-[#43C6AC] bg-clip-text text-transparent",
+  gradientText: "bg-linear-to-r from-[#1A237E] to-[#43C6AC] bg-clip-text text-transparent",
   subtitle: "text-gray-600 text-base md:text-lg",
   navWrapper: "flex items-center gap-4 w-full md:w-auto",
   navLine: "hidden md:block flex-1 border-t border-gray-200",
@@ -167,7 +167,7 @@ export const ourBestSellersStyles = {
   scrollContainer: "flex overflow-x-auto gap-4 md:gap-8 pb-6 md:pb-8 scrollbar-hide scroll-smooth snap-x",
 
   // Card
-  card: (bgClass) => `flex-shrink-0 w-[calc(100vw-2rem)] sm:w-96 md:w-[400px] rounded-2xl md:rounded-3xl overflow-hidden bg-gradient-to-br ${bgClass} shadow-lg md:shadow-xl relative group transition-all duration-300 hover:shadow-xl md:hover:shadow-2xl snap-center`,
+  card: (bgClass) => `flex-shrink-0 w-[calc(100vw-2rem)] sm:w-96 md:w-[400px] rounded-2xl md:rounded-3xl overflow-hidden bg-linear-to-br ${bgClass} shadow-lg md:shadow-xl relative group transition-all duration-300 hover:shadow-xl md:hover:shadow-2xl snap-center`,
   cardInner: "p-6 md:p-8 pb-48 md:pb-60 flex flex-col justify-between h-full relative z-10",
   stars: "flex items-center gap-1 md:gap-1.5",
   bookInfo: "space-y-1.5 md:space-y-2",
@@ -182,7 +182,7 @@ export const ourBestSellersStyles = {
   qtyBtn: "text-[#1A237E] hover:text-[#43C6AC] p-1 md:p-1.5",
   qtyText: "text-gray-900 font-medium w-6 text-center",
 
-  addButton: "flex items-center gap-1.5 md:gap-2 px-4 md:px-6 py-2 md:py-3 bg-gradient-to-r from-[#1A237E] to-[#43C6AC] text-white rounded-lg md:rounded-xl font-medium hover:scale-[1.02] transition-transform text-sm md:text-base",
+  addButton: "flex items-center gap-1.5 md:gap-2 px-4 md:px-6 py-2 md:py-3 bg-linear-to-r from-[#1A237E] to-[#43C6AC] text-white rounded-lg md:rounded-xl font-medium hover:scale-[1.02] transition-transform text-sm md:text-base",
 
   // Book Image
   bookImage: "absolute right-4 md:right-6 bottom-4 md:bottom-6 w-20 h-28 md:w-[120px] md:h-[180px] object-cover rounded-lg md:rounded-xl border-2 md:border-4 border-white shadow-xl md:shadow-2xl transform group-hover:-translate-y-1 md:group-hover:-translate-y-2 transition-transform",
@@ -194,11 +194,11 @@ export const ourBestSellersStyles = {
 // assets/dummy/dummystyles.js
 
 export const homeBooksStyles = {
-  section: "py-20 bg-gradient-to-br from-[#43C6AC] to-[#F8FFAE] relative",
+  section: "py-20 bg-linear-to-br from-[#43C6AC] to-[#F8FFAE] relative",
   container: "container mx-auto px-4 md:px-6",
   card: "bg-white rounded-2xl shadow-lg p-8 md:p-12",
-  heading: "text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#43C6AC] to-[#2B5876] bg-clip-text text-transparent mb-4",
-  headingLine: "h-1 w-20 bg-gradient-to-r from-[#43C6AC] to-[#F8FFAE] rounded-full mx-auto",
+  heading: "text-3xl md:text-4xl font-bold bg-linear-to-r from-[#43C6AC] to-[#2B5876] bg-clip-text text-transparent mb-4",
+  headingLine: "h-1 w-20 bg-linear-to-r from-[#43C6AC] to-[#F8FFAE] rounded-full mx-auto",
   grid: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8",
   bookCard: "group relative",
   imageWrapper: "relative h-72 overflow-hidden rounded-xl border-4 border-[#43C6AC]/20 mb-4",
@@ -213,7 +213,7 @@ export const homeBooksStyles = {
   qtyBox: "flex items-center justify-between bg-[#43C6AC]/10 px-4 py-2 rounded-lg",
   qtyBtn: "text-[#43C6AC] hover:text-[#368f7a] cursor-pointer",
   addBtn:
-    "w-full flex items-center cursor-pointer justify-center gap-2 px-4 py-2 bg-gradient-to-r from-[#43C6AC] to-[#F8FFAE] text-black rounded-lg hover:shadow-lg transition-all",
+    "w-full flex items-center cursor-pointer justify-center gap-2 px-4 py-2 bg-linear-to-r from-[#43C6AC] to-[#F8FFAE] text-black rounded-lg hover:shadow-lg transition-all",
   viewBtnWrapper: "flex justify-center mt-12",
   viewBtn:
     "group inline-flex items-center justify-center px-6 py-3 rounded-full border-2 border-[#43C6AC] text-[#43C6AC] hover:bg-[#43C6AC]/10 transition-all",
@@ -231,11 +231,11 @@ export const homeAboutStyles = {
   container: "container mx-auto px-4 md:px-6 relative z-10",
   aboutGrid: "grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20",
   imageWrapper: "relative group",
-  imageGlow: "absolute -inset-4 bg-gradient-to-r from-[#43C6AC] to-[#F8FFAE] rounded-2xl blur opacity-0 group-hover:opacity-20 transition-opacity duration-500",
+  imageGlow: "absolute -inset-4 bg-linear-to-r from-[#43C6AC] to-[#F8FFAE] rounded-2xl blur opacity-0 group-hover:opacity-20 transition-opacity duration-500",
   imageContainer: "relative overflow-hidden rounded-xl border-4 border-[#43C6AC]/20",
   aboutImage: "w-full h-auto rounded-xl transition-transform duration-700 hover:rotate-1",
-  aboutHeader: "text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#43C6AC] to-[#2B5876] bg-clip-text text-transparent mb-4",
-  underline: "h-1 w-20 bg-gradient-to-r from-[#43C6AC] to-[#F8FFAE] rounded-full",
+  aboutHeader: "text-3xl md:text-4xl font-bold bg-linear-to-r from-[#43C6AC] to-[#2B5876] bg-clip-text text-transparent mb-4",
+  underline: "h-1 w-20 bg-linear-to-r from-[#43C6AC] to-[#F8FFAE] rounded-full",
   aboutText: "text-gray-600 leading-relaxed",
   statGrid: "grid grid-cols-1 md:grid-cols-3 gap-6",
   statCard: "bg-white border-2 border-[#43C6AC]/20 rounded-xl p-4 text-center shadow-lg",
@@ -243,14 +243,14 @@ export const homeAboutStyles = {
   statIcon: "h-6 w-6 text-[#43C6AC]",
   statValue: "text-2xl font-bold text-gray-900",
   statLabel: "text-sm text-gray-600",
-  aboutButton: "group inline-flex items-center justify-center px-6 py-3 rounded-full bg-gradient-to-r from-[#43C6AC] to-[#F8FFAE] text-black font-medium shadow-sm hover:shadow-[#43C6AC]/25 transition-all duration-300",
+  aboutButton: "group inline-flex items-center justify-center px-6 py-3 rounded-full bg-linear-to-r from-[#43C6AC] to-[#F8FFAE] text-black font-medium shadow-sm hover:shadow-[#43C6AC]/25 transition-all duration-300",
   arrowIcon: "ml-2 h-4 w-4 transition-transform group-hover:translate-x-1",
-  sectionHeader: "text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#43C6AC] to-[#2B5876] bg-clip-text text-transparent mb-4",
-  headerUnderline: "h-1 w-20 mx-auto bg-gradient-to-r from-[#43C6AC] to-[#F8FFAE] rounded-full",
+  sectionHeader: "text-3xl md:text-4xl font-bold bg-linear-to-r from-[#43C6AC] to-[#2B5876] bg-clip-text text-transparent mb-4",
+  headerUnderline: "h-1 w-20 mx-auto bg-linear-to-r from-[#43C6AC] to-[#F8FFAE] rounded-full",
   headerText: "mt-4 text-gray-600 text-center max-w-2xl mx-auto",
   bookGrid: "grid grid-cols-1 md:grid-cols-3 gap-8",
   bookCardWrap: "group relative",
-  bookCardGlow: "absolute -inset-0.5 bg-gradient-to-r from-[#43C6AC] to-[#F8FFAE] rounded-xl blur opacity-0 group-hover:opacity-30 transition-opacity duration-500",
+  bookCardGlow: "absolute -inset-0.5 bg-linear-to-r from-[#43C6AC] to-[#F8FFAE] rounded-xl blur opacity-0 group-hover:opacity-30 transition-opacity duration-500",
   bookCard: "relative bg-white border-2 border-[#43C6AC]/20 rounded-xl overflow-hidden transition-all duration-500 hover:shadow-lg hover:shadow-[#43C6AC]/20 h-full flex flex-col",
   bookImageWrapper: "relative h-48 overflow-hidden",
   bookImage: "w-full h-full object-cover transition-transform duration-500 group-hover:scale-110",
@@ -273,7 +273,7 @@ export const footerStyles = {
   logoBlock: "space-y-4",
   logoLink: "inline-flex items-center gap-2",
   logoImg: "h-9 w-9 rounded-full",
-  logoText: "text-2xl font-bold bg-gradient-to-r from-[#43C6AC] to-[#2B5876] bg-clip-text text-transparent",
+  logoText: "text-2xl font-bold bg-linear-to-r from-[#43C6AC] to-[#2B5876] bg-clip-text text-transparent",
   aboutText: "text-gray-600 text-sm leading-relaxed",
   socialWrap: "flex gap-3",
   socialButton: "flex items-center justify-center w-9 h-9 rounded-full bg-white border border-[#43C6AC]/30 hover:border-[#43C6AC] hover:bg-[#F8FFAE]/20 transition-all duration-300",
@@ -288,7 +288,7 @@ export const footerStyles = {
   newsletterText: "text-gray-600 text-sm leading-relaxed",
   formWrap: "relative",
   input: "w-full px-4 py-2.5 bg-white border border-[#43C6AC]/30 rounded-lg text-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#43C6AC]/50 transition-all pr-12",
-  button: "absolute right-1 top-1 p-2 bg-gradient-to-r from-[#43C6AC] to-[#F8FFAE] rounded-md text-white hover:scale-105 transform transition-all shadow-sm hover:shadow-[#43C6AC]/30",
+  button: "absolute right-1 top-1 p-2 bg-linear-to-r from-[#43C6AC] to-[#F8FFAE] rounded-md text-white hover:scale-105 transform transition-all shadow-sm hover:shadow-[#43C6AC]/30",
   contactBlock: "space-y-4",
   contactTitle: "text-lg font-semibold text-gray-900 mb-2",
   contactList: "space-y-3",
@@ -334,54 +334,54 @@ export const sendIconWrapperStyle = "flex items-center justify-center"
 
 // components/styles/dummyStyles.js
 const aboutStyles = {
-  container: "min-h-screen bg-gradient-to-br from-[#f8fafc] to-[#f0fdfa] pt-24",
+  container: "min-h-screen bg-linear-to-br from-[#f8fafc] to-[#f0fdfa] pt-24",
 
   section: "relative py-10 overflow-hidden",
   innerContainer: "container mx-auto px-4 md:px-6",
   headingWrapper: "text-center mb-2 space-y-8",
-  heading: "text-6xl md:text-7xl font-black bg-gradient-to-r from-[#43C6AC] to-[#2B5876] bg-clip-text text-transparent mb-6 leading-tight",
-  underline: "absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-48 h-2 bg-gradient-to-r from-[#43C6AC] to-[#F8FFAE] rounded-full",
+  heading: "text-6xl md:text-7xl font-black bg-linear-to-r from-[#43C6AC] to-[#2B5876] bg-clip-text text-transparent mb-6 leading-tight",
+  underline: "absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-48 h-2 bg-linear-to-r from-[#43C6AC] to-[#F8FFAE] rounded-full",
   subText: "text-xl md:text-2xl text-gray-700 max-w-4xl mx-auto leading-relaxed font-medium",
 
-  statsSection: "py-20 bg-gradient-to-br from-[#43C6AC]/5 via-[#F8FFAE]/5 to-[#43C6AC]/5",
+  statsSection: "py-20 bg-linear-to-br from-[#43C6AC]/5 via-[#F8FFAE]/5 to-[#43C6AC]/5",
   statCard: "bg-white/95 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-[#43C6AC]/10 transition-transform hover:-translate-y-2",
-  statIconWrapper: "w-16 h-16 rounded-2xl bg-gradient-to-r from-[#43C6AC] to-[#F8FFAE] flex items-center justify-center mb-6 shadow-lg",
+  statIconWrapper: "w-16 h-16 rounded-2xl bg-linear-to-r from-[#43C6AC] to-[#F8FFAE] flex items-center justify-center mb-6 shadow-lg",
   statValue: "text-5xl font-black text-[#2B5876] mb-2",
   statLabel: "text-lg font-medium text-gray-600",
 
   aboutSection: "py-20",
   aboutImageWrapper: "relative group overflow-hidden rounded-[2.5rem] shadow-2xl",
   aboutImage: "w-full h-auto object-cover transform transition duration-700 group-hover:scale-105",
-  aboutOverlay: "absolute inset-0 bg-gradient-to-t from-[#43C6AC]/30 to-transparent",
-  aboutCaption: "absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-[#2B5876]/80 to-transparent",
+  aboutOverlay: "absolute inset-0 bg-linear-to-t from-[#43C6AC]/30 to-transparent",
+  aboutCaption: "absolute bottom-0 left-0 right-0 p-8 bg-linear-to-t from-[#2B5876]/80 to-transparent",
   aboutTitle: "text-2xl font-bold text-white",
   aboutSubtitle: "text-gray-200",
 
   aboutTextSection: "space-y-10",
   aboutHeadingSection: "space-y-6",
-  aboutHeading: "text-5xl font-black bg-gradient-to-r from-[#43C6AC] to-[#2B5876] bg-clip-text text-transparent",
+  aboutHeading: "text-5xl font-black bg-linear-to-r from-[#43C6AC] to-[#2B5876] bg-clip-text text-transparent",
   aboutParagraph: "text-lg text-gray-700 leading-relaxed",
   aboutBoxGrid: "grid grid-cols-1 md:grid-cols-2 gap-6",
   aboutBox: "p-6 bg-white/95 backdrop-blur-lg rounded-2xl shadow-xl border border-[#43C6AC]/10",
   aboutBoxHeading: "text-2xl font-bold text-[#2B5876] mb-3",
   aboutBoxText: "text-gray-600",
 
-  teamSection: "py-20 bg-gradient-to-br from-[#43C6AC]/5 to-[#F8FFAE]/5",
-  sectionTitle: "text-5xl font-black bg-gradient-to-r from-[#43C6AC] to-[#2B5876] bg-clip-text text-transparent",
-  sectionUnderline: "mt-6 h-1 w-24 mx-auto bg-gradient-to-r from-[#43C6AC] to-[#F8FFAE] rounded-full",
+  teamSection: "py-20 bg-linear-to-br from-[#43C6AC]/5 to-[#F8FFAE]/5",
+  sectionTitle: "text-5xl font-black bg-linear-to-r from-[#43C6AC] to-[#2B5876] bg-clip-text text-transparent",
+  sectionUnderline: "mt-6 h-1 w-24 mx-auto bg-linear-to-r from-[#43C6AC] to-[#F8FFAE] rounded-full",
   teamCard: "group relative bg-white/95 backdrop-blur-lg rounded-[2rem] p-6 shadow-2xl border border-[#43C6AC]/10 transition-transform hover:-translate-y-3",
   teamImageWrapper: "relative overflow-hidden rounded-2xl mb-6",
   teamImage: "w-full h-80 object-cover transform transition duration-500 group-hover:scale-110",
-  teamOverlay: "absolute inset-0 bg-gradient-to-t from-[#43C6AC]/40 to-transparent",
+  teamOverlay: "absolute inset-0 bg-linear-to-t from-[#43C6AC]/40 to-transparent",
   teamName: "text-2xl font-bold text-gray-900 mb-1",
   teamPosition: "text-lg text-[#43C6AC] font-medium mb-6",
-  socialIcon: "p-2 rounded-full bg-gradient-to-r from-[#43C6AC] to-[#F8FFAE] text-white hover:shadow-lg transition-all hover:scale-110",
+  socialIcon: "p-2 rounded-full bg-linear-to-r from-[#43C6AC] to-[#F8FFAE] text-white hover:shadow-lg transition-all hover:scale-110",
 
   branchSection: "py-20",
   branchCard: "bg-white/95 backdrop-blur-lg rounded-2xl p-6 shadow-2xl border border-[#43C6AC]/10 transition-transform hover:-translate-y-2",
   branchImageWrapper: "relative h-56 rounded-xl overflow-hidden mb-6",
   branchImage: "w-full h-full object-cover transform transition duration-500 hover:scale-110",
-  branchOverlay: "absolute inset-0 bg-gradient-to-t from-[#43C6AC]/30 to-transparent",
+  branchOverlay: "absolute inset-0 bg-linear-to-t from-[#43C6AC]/30 to-transparent",
   branchInfoWrapper: "space-y-4",
   branchLocationWrapper: "flex items-center space-x-3",
   branchLocation: "text-xl font-semibold text-[#2B5876]",
@@ -393,10 +393,10 @@ export default aboutStyles
 
 // dummyStyles.js
 export const booksPageStyles = {
-  container: "min-h-screen pt-24 pb-16 bg-gradient-to-br from-[#f8fafc] to-[#f0fdfa]",
+  container: "min-h-screen pt-24 pb-16 bg-linear-to-br from-[#f8fafc] to-[#f0fdfa]",
   innerContainer: "container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl",
   headerWrapper: "text-center mb-12 md:mb-16 space-y-2 md:space-y-4",
-  headerTitle: "text-4xl md:text-5xl font-bold text-transparent pb-2 md:pb-4 bg-clip-text bg-gradient-to-r from-[#1A237E] to-[#43C6AC]",
+  headerTitle: "text-4xl md:text-5xl font-bold text-transparent pb-2 md:pb-4 bg-clip-text bg-linear-to-r from-[#1A237E] to-[#43C6AC]",
   headerSubtitle: "text-gray-600 text-base md:text-xl max-w-3xl mx-auto px-2",
   searchWrapper: "mb-8 md:mb-12 space-y-4 md:space-y-6",
   searchInputWrapper: "relative group",
@@ -416,7 +416,7 @@ export const booksPageStyles = {
   description: "text-sm text-gray-600 mb-4",
   priceCartWrapper: "flex items-center justify-between mt-auto",
   price: "text-base md:text-lg font-bold text-[#1A237E]",
-  cartButtons: "flex cursor-pointer items-center gap-1 md:gap-2 px-3 md:px-4 py-2 md:py-2.5 bg-gradient-to-r from-[#1A237E] to-[#43C6AC] text-white rounded-lg md:rounded-xl text-sm md:text-base font-medium hover:shadow-md hover:scale-[1.02] transition-all"
+  cartButtons: "flex cursor-pointer items-center gap-1 md:gap-2 px-3 md:px-4 py-2 md:py-2.5 bg-linear-to-r from-[#1A237E] to-[#43C6AC] text-white rounded-lg md:rounded-xl text-sm md:text-base font-medium hover:shadow-md hover:scale-[1.02] transition-all"
 };
 
 
@@ -488,7 +488,7 @@ export const styles = {
   totalRow: "flex justify-between items-center",
   totalLabel: "text-base md:text-lg font-bold text-gray-900",
   totalAmount: "text-xl md:text-2xl font-bold text-emerald-600",
-  checkoutBtn: "w-full flex items-center justify-center gap-2 px-5 py-3 md:px-6 md:py-4 bg-gradient-to-r from-[#2B5876] to-[#43C6AC] text-white rounded-lg md:rounded-xl font-semibold hover:opacity-90 transition-opacity text-sm md:text-base mb-3 md:mb-4",
+  checkoutBtn: "w-full flex items-center justify-center gap-2 px-5 py-3 md:px-6 md:py-4 bg-linear-to-r from-[#2B5876] to-[#43C6AC] text-white rounded-lg md:rounded-xl font-semibold hover:opacity-90 transition-opacity text-sm md:text-base mb-3 md:mb-4",
   checkoutIcon: "h-4 w-4 md:h-5 md:w-5",
   continueBtn: "w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 md:px-6 md:py-3 rounded-lg md:rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors text-sm md:text-base",
   continueIcon: "h-4 w-4 md:h-5 md:w-5"
