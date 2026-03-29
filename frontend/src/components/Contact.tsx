@@ -27,8 +27,8 @@ const Contact = () => {
 
 
     const [errors, setErrors] = useState<newErrors>({});
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [toast, setToast] = useState({ visible: false, message: "", type: "info" })
+    const [isSubmitting, _setIsSubmitting] = useState(false);
+    const [toast, _setToast] = useState({ visible: false, message: "", type: "info" })
     const optional = "(Optional)"; // Define it here
 
     const validateForm = () => {

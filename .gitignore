@@ -23,9 +23,21 @@ dist-ssr
 *.sln
 *.sw?
 
-# Secrets
+# Dependencies - Use the **/ prefix to catch them in subfolders
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+dist-ssr/
+*.local
+
+# Secrets - Protect your Stripe and JWT keys everywhere
 .env
+**/.env
 .env.local
+**/.env.local
+
+# ... keep the rest of your file as is ...
 
 # Notes
 notes.txt

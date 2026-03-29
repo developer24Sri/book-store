@@ -6,7 +6,7 @@ import BannerImg from "../assets/images/banner1.png"
 const Banner = () => {
 
     const [searchQuery, setSearchQuery] = useState("");
-    const [currentWord, setCurrentWord] = useState(0);
+    const [_currentWord, setCurrentWord] = useState(0);
 
     const navigate = useNavigate();
 

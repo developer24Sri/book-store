@@ -6,12 +6,15 @@ import BookPage from "./pages/BookPage";
 import ContactPage from "./pages/ContactPage";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
+import ScrollToTop from "./Utils/ScrollToTop";
 
 
 
 function App() {
 
   return (
+    <>
+      <ScrollToTop />
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/cart" element={<CartPage />} />
@@ -22,6 +25,7 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
     </Routes>
+    </>
   )
 }
 
