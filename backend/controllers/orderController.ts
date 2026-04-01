@@ -4,6 +4,7 @@ import Stripe from "stripe";
 import { v4 as uuidv4 } from "uuid";
 import type { Request, Response, NextFunction } from "express"
 
+
 interface UserReq extends Request {
     user?: any;
 }
@@ -47,7 +48,7 @@ export const createOrder = async (req: UserReq, res: Response, next: NextFunctio
             const bookDoc = await Book.findById(i.id).lean();
 
             if (!bookDoc) {
-                const err: any = new Error(`Book not found: ${i.id}`);
+                const err = new Error(`Book not found: ${i.id}`) as Error & { status: number };
                 err.status = 400;
                 throw err;
             }
@@ -164,7 +165,7 @@ export const confirmPayment = async (req: Request, res: Response, next: NextFunc
 //get all orders:
 export const getOrders = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { search = "", status }: any = req.query;
+        const { search = "", status } = req.query as { search?: string; status?: string };
         const filter: any = {};
 
         if (status) filter.orderStatus = status;

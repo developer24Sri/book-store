@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-interface IOrder extends Document {
+export interface IOrder extends Document {
     totalAmount: number;
     taxAmount: number;
     shippingCharge: number;
