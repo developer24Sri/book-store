@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom"
 import Sidebar from "./components/Sidebar"
 import AddBook from "./components/AddBook"
+import ListBook from "./components/ListBook"
 
 const App = () => {
     return (
@@ -9,6 +10,7 @@ const App = () => {
             <main className="flex-1 overflow-auto">
                 <Routes>
                     <Route path="/" element={<AddBook />} />
+                    <Route path="/list-books" element={<ListBook />} />
                 </Routes>
             </main>
         </div>
