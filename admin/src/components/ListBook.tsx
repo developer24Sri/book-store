@@ -1,12 +1,14 @@
-import axios from "axios";
-import { Filter, RatIcon, Star } from "lucide-react"
+import axios, { AxiosError } from "axios";
+import { BookOpen, Filter, Trash2 } from "lucide-react"
 import { useEffect, useMemo, useState } from "react"
+import type { initialFormDataType } from "./AddBook";
 
 const API_BASE = `http://localhost:4000`
 
+
 const ListBook = () => {
 
-    const [books, setBooks] = useState([]);
+    const [books, setBooks] = useState<initialFormDataType[]>([]);
     const [filterCategory, setFilterCategory] = useState("All");
     const [sortConfig, setSortConfig] = useState("");
     const [loading, setLoading] = useState(false);
@@ -22,7 +24,9 @@ const ListBook = () => {
                 const { data } = await axios.get(`${API_BASE}/api/book`)
                 setBooks(data);
             } catch (error) {
-                setError(error?.response?.message || "Failed to fetch Books.")
+                if (error instanceof AxiosError) {
+                    setError(error?.response?.data?.errorMessage || "Failed to fetch Books.")
+                }
             }
             finally {
                 setLoading(false);
@@ -32,8 +36,8 @@ const ListBook = () => {
     }, []);
 
     //fetch category from the books:
-    const category = useMemo(
-        () => ["All", ...new Set(books.map((book) => book.category))],
+    const category: string[] = useMemo(
+        () => ["All", ...new Set(books.map((book) => book.category || "Uncategorized"))],
         [books]
     )
 
@@ -45,9 +49,9 @@ const ListBook = () => {
         }
 
         if (sortConfig === "priceLowToHigh") {
-            filtered = [...filtered].sort((a, b) => a.price - b.price);
+            filtered = [...filtered].sort((a, b) => Number(a.price || 0) - Number(b.price || 0));
         } else if (sortConfig === "topRated") {
-            filtered = [...filtered].sort((a, b) => b.rating - a.rating);
+            filtered = [...filtered].sort((a, b) => Number(b.rating) - Number(a.rating) || 0);
         }
 
         return filtered;
@@ -63,7 +67,7 @@ const ListBook = () => {
     ];
 
     //star rating:
-    const RatingStar = ({ rating }) => (
+    const RatingStar = ({ rating }: { rating: number }) => (
         <div className="flex items-center">
             <div className="flex">
                 {[...Array(5)].map((_, i) => (
@@ -79,6 +83,24 @@ const ListBook = () => {
             <span className="ml-1 text-sm text-gray-600">{rating.toFixed(2)}</span>
         </div>
     )
+
+    //delete books using ID:
+    const handleDelete = async (id: string | undefined) => {
+        if (!window.confirm("Are you sure?")) return;
+
+        try {
+            await axios.delete(
+                `${API_BASE}/api/book/${id}`,
+                { validateStatus: status => [200, 204, 500].includes(status) }
+            )
+            setBooks(prev => prev.filter(book => book._id !== id));
+        } catch (error) {
+            console.error(error);
+            if (error instanceof AxiosError) {
+                alert(error?.response?.data?.message || "Failed to delete the book.")
+            }
+        }
+    }
 
     return (
         <div className="p-6 max-w-7xl mx-auto">
@@ -103,7 +125,7 @@ const ListBook = () => {
                                 >
                                     {category.map((category) => (
                                         <option value={category} key={category}>
-                                            {(category = "All" ? "All Category" : category)}
+                                            {(category === "All" ? "All Category" : category)}
                                         </option>
                                     ))}
                                 </select>
@@ -145,7 +167,7 @@ const ListBook = () => {
                                         <div className="flex items-center">
                                             {book.image && (
                                                 <img
-                                                    src={`http://localhost:4000${book.image}`}
+                                                    src={`http://localhost:4000/${book.image}`}
                                                     alt={book.title}
                                                     className="h-10 w-8 object-cover rounded"
                                                 />
@@ -169,12 +191,32 @@ const ListBook = () => {
                                         {book.price}
                                     </td>
                                     <td className="px-6 py-4">
-                                        <RatingStar rating={book.rating} />
+                                        <RatingStar rating={book.rating as number} />
+                                    </td>
+                                    <td className="px-6 py-4 flex gap-3">
+                                        <button
+                                            onClick={() => handleDelete(book._id)}
+                                            className="text-red-600 hover:text-red-900"
+                                        >
+                                            <Trash2 className="h-5 w-5" />
+                                        </button>
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
+
+                    {!displayedBooks.length && !loading && (
+                        <div className="text-center py-12">
+                            <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
+                                <BookOpen className="text-gray-400 w-8 h-8" />
+                            </div>
+                            <h3 className="text-lg font-medium text-gray-900 mb-1">
+                                No Book's Found!
+                            </h3>
+                            <p className="text-gray-500">Try Adjusting your filter or sort options.</p>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

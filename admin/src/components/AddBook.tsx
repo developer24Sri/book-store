@@ -2,42 +2,44 @@ import { useState } from "react";
 import axios from "axios";
 import { BookPlus, Star } from "lucide-react";
 
+
+export interface initialFormDataType {
+    _id?: string,
+    title?: string,
+    author?: string,
+    price?: string,
+    image?: null | File,
+    rating: number | number[],
+    category?: string,
+    description?: string,
+    preview?: string
+}
+
+interface MessageState {
+    type: "success" | "error" | null,
+    text: string | null
+}
+
+const API_BASE = `http://localhost:4000`
+
+
+const initialFormData = {
+    title: "",
+    author: "",
+    price: "",
+    image: null,
+    rating: 4,
+    category: "Fiction",
+    description: "",
+    preview: "",
+};
+
+const categories = [
+    "Fiction", "Non-Fiction", "Mystery", "Sci-Fi",
+    "Biography", "Self-Help", "Thriller"
+];
+
 const AddBook = () => {
-
-    const API_BASE = `http://localhost:4000`
-
-    interface initialFormDataType {
-        title?: string,
-        author?: string,
-        price?: string,
-        image?: null | File,
-        rating: number,
-        category?: string,
-        description?: string,
-        preview?: string
-    }
-
-    interface MessageState {
-        type: "success" | "error" | null,
-        text: string | null
-    }
-
-    const initialFormData = {
-        title: "",
-        author: "",
-        price: "",
-        image: null,
-        rating: 4,
-        category: "Fiction",
-        description: "",
-        preview: "",
-    };
-
-    const categories = [
-        "Fiction", "Non-Fiction", "Mystery", "Sci-Fi",
-        "Biography", "Self-Help", "Thriller"
-    ];
-
     const [formData, setFormData] = useState<initialFormDataType>(initialFormData);
     const [hoverRating, setHoverRating] = useState(0);
     const [loading, setLoading] = useState(false);
@@ -96,7 +98,7 @@ const AddBook = () => {
     }
 
     //star rating:
-    const handleStarClick = (rating:number) => {
+    const handleStarClick = (rating: number) => {
         setFormData(prev => ({
             ...prev, rating
         }))
@@ -166,7 +168,7 @@ const AddBook = () => {
                                             onMouseLeave={() => setHoverRating(0)}
                                             aria-label={`Rate ${starValue} star${starValue !== 1 ? "s" : ""} `}>
                                             <Star
-                                                className={`w-5 h-5 ${(hoverRating || formData?.rating) >= starValue
+                                                className={`w-5 h-5 ${((hoverRating) || Number(formData?.rating)) >= starValue
                                                     ?
                                                     "text-amber-400 fill-amber-400"
                                                     :
