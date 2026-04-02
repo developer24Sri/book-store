@@ -1,13 +1,15 @@
-import { AlertCircle, BookOpen, CheckCircle, ChevronDown, ChevronUp, Clock, CreditCard, DollarSign, Package, RefreshCw, Search, Truck } from "lucide-react";
+import { AlertCircle, BookOpen, CheckCircle, ChevronDown, ChevronUp, Clock, CreditCard, DollarSign, Edit, Mail, MapPin, Package, Phone, RefreshCw, Search, Truck, User, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 
 interface OrderItem {
     _id: string;
+    book: string,
     title: string;
+    author: string,
+    image: string;
     price: number;
     quantity: number;
-    image: string;
 }
 
 interface Order {
@@ -17,12 +19,22 @@ interface Order {
     finalAmount: number;
     paymentMethod: string;
     orderStatus: string;
+    totalAmount: number,
+    shippingCharge: number,
+    taxAmount: number,
+    paymentStatus: string,
     shippingAddress: {
         fullName: string;
+        email:string,
+        phoneNumber: number,
         address: string;
+        street: string,
         city: string;
+        state: string,
+        zipCode: number,
+
     };
-    items: OrderItem[];
+    book: OrderItem[];
 }
 
 type SortKey = "id" | "customer" | "date" | "amount";
@@ -81,7 +93,7 @@ const Orders = () => {
     const [counts, setCounts] = useState({ totalOrders: 0, pending: 0, processing: 0, shipped: 0, delivered: 0, cancelled: 0, pendingPayment: 0 });
     const [searchTerm, setSearchTerm] = useState("");
     const [activeTab, setActiveTab] = useState("all");
-    const [sortConfig, setSortConfig] = useState<{key: SortKey | null; direction: "asc" | "desc"}>({ key: null, direction: "asc" });
+    const [sortConfig, setSortConfig] = useState<{ key: SortKey | null; direction: "asc" | "desc" }>({ key: null, direction: "asc" });
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
     useEffect(() => {
@@ -106,7 +118,7 @@ const Orders = () => {
     const sortedOrders = useMemo(() => {
         if (!sortConfig.key) return orders;
         return [...orders].sort((a, b) => {
-            let aVal: any, bVal: any;
+            let aVal: string | number, bVal: string | number;
 
             // Handle nested customer name vs direct properties
             if (sortConfig.key === "customer") {
@@ -321,9 +333,175 @@ const Orders = () => {
                                 <p className="text-gray-500 text-sm">Try adjusting your search or filters.</p>
                             </div>
                         )}
+
+                        <div className="px-6 py-4 bg-gray-50 flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                            <div className="text-sm text-gray-600">
+                                Showing <span className="font-medium">{sortedOrders.length}</span> of {" "}
+                                <span className="font-medium">{counts.totalOrders}</span> orders
+                            </div>
+                            <div className="flex gap-4">
+                                {[
+                                    { label: "Online Payment", color: "bg-purple-500" },
+                                    { label: "Cash on Delivery", color: "bg-orange-500" }
+                                ].map((i, idx) => (
+                                    <div key={idx} className="flex items-center gap-2">
+                                        <div className={`w-3 h-3 ${i.color} rounded-full`}></div>
+                                        <span className="text-xs text-gray-600">{i.label}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+            {selectedOrder && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+                    <div className="bg-white rounded-xl shadow-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                        <div className="border-b p-6 flex justify-between items-center">
+                            <div>
+                                <h2 className="text-xl font-bold text-gray-800">Order Detials: {selectedOrder.orderId}</h2>
+                                <p className="text-gray-600 text-sm mt-1">Order on {new Date(selectedOrder.placedAt).toLocaleDateString()}</p>
+                            </div>
+                            <button onClick={() => setSelectedOrder(null)} className="text-gray-500 hover:text-gray-700 p-1 rounded-full hover:bg-gray-100">
+                                <X className="w-6 h-6" />
+                            </button>
+                        </div>
+                        <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="border border-gray-200 rounded-xl p-5">
+                                <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                                    <User className="w-5 h-5 mr-2 text-[#43C6AC]" />
+                                    Customer Information
+                                </h3>
+                                <div className="space-y-4">
+                                    {[
+                                        { icon: User, label: "Customer", value: selectedOrder.shippingAddress.fullName },
+                                        { icon: Mail, label: "Email", value: selectedOrder.shippingAddress.email },
+                                        { icon: Phone, label: "Phone", value: selectedOrder.shippingAddress.phoneNumber },
+                                        {
+                                            icon: MapPin,
+                                            label: "Address",
+                                            value: `${selectedOrder.shippingAddress.street}, ${selectedOrder.shippingAddress.city}, ${selectedOrder.shippingAddress.state} ${selectedOrder.shippingAddress.zipCode}`
+                                        }
+                                    ].map((it, idx) => (
+                                        <div key={idx} className="flex items-start">
+                                            <it.icon className="w-5 h-5 text-gray-500 mr-3 mt-1" />
+                                            <div>
+                                                <p className="font-medium">{it.label}</p>
+                                                <p className="font-medium">{it.value}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="border border-gray-200 rounded-xl p-5">
+                                <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                                    <BookOpen className="w-5 h-5 mr-2 text-[#43C6AC]" />
+                                    Order Summary
+                                </h3>
+                                <div className="space-y-4">
+                                    {selectedOrder.book?.map((bk, i) => (
+                                        <div key={i} className="flex items-center justify-between mb-4">
+                                            <img
+                                                src={`${API_BASE}/${bk.image}`}
+                                                alt={bk.title}
+                                                className="w-16 h20 object-cover rounded" />
+                                            <div className="flex-1 px-4">
+                                                <p className="font-medium">{bk.title}</p>
+                                                <p className="text-sm text-gray-500">Author: {bk.author}</p>
+                                                <p className="text-xs text-gray-400">ID: {bk.book}</p>
+                                            </div>
+                                            <div className="text-right">
+                                                <p>Qty: {bk.quantity}</p>
+                                                <p className="text-sm">{bk.price.toFixed(2)} each</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                    <div className="pt-4 space-y-4">
+                                        {[
+
+                                            { label: "Subtotal:", value: `₹${selectedOrder.totalAmount.toFixed(2)}` },
+                                            { label: "Shipping:", value: `₹${selectedOrder.shippingCharge.toFixed(2)}` },
+                                            { label: "Tax (5%):", value: `₹${selectedOrder.taxAmount.toFixed(2)}` },
+                                            { label: "Total:", value: `₹${selectedOrder.finalAmount.toFixed(2)}`, isTotal: true }
+
+                                        ].map((it, i) => (
+                                            <div key={i} className={`flex justify-between ${it.isTotal ? "pt-2 border-t" : ""}`}>
+                                                <span className="text-gray-600">{it.label}</span>
+                                                <span className={`${it.isTotal ? "font-bold text-lg text-[#43C6AC]" : ""}`}>{it.value}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="border border-gray-200 rounded-xl p-5">
+                                <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                                    <CreditCard className="w-5 h-5 mr-2 text-[#43C6AC]" />
+                                    Payment Information
+                                </h3>
+                                <div className="space-y-4">
+                                    {[
+                                        {
+                                            label: "Method:",
+                                            value: selectedOrder.paymentMethod,
+                                            color: selectedOrder.paymentMethod === "Online Payment" ?
+                                                "bg-purple-100 text-purple-800" : "bg-orange-100 text-orange-800"
+                                        },
+                                        {
+                                            label: "Status:",
+                                            value: selectedOrder.paymentStatus,
+                                            color: selectedOrder.paymentStatus === "Paid" ?
+                                                "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"
+                                        }
+
+                                    ].map((it, i) => (
+                                        <div key={i} className="flex justify-between">
+                                            <span className="text-gray-600">{it.label}</span>
+                                            <span className={`px-3 py-1 rounded-full text-xs ${it.color}`}>{it.value}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="border border-gray-200 rounded-xl p-5">
+                                <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                                    <Edit className="w-5 h-5 mr-2 text-[#43C6AC]" />
+                                    Update Order Status Hear
+                                </h3>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Order Status
+                                    </label>
+                                    <select value={selectedOrder.orderStatus} onChange={(e) => {
+                                        const newStatus = e.target.value;
+                                        setSelectedOrder({ ...selectedOrder, orderStatus: newStatus });
+                                        updateStatus(selectedOrder._id, newStatus);
+                                    }} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-1 focus:ring-[#41ad98] focus:border-transparent">
+                                        {
+                                            statusOptions.map(opt => (
+                                                <option value={opt.value} key={opt.value}>{opt.label}</option>
+                                            ))
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        {/* close the view model */}
+                        <div className="border-t p-6 flex justify-end">
+                            <button
+                                onClick={() => setSelectedOrder(null)}
+                                className="px-6 py-2 bg-gray-200 text-gray-800 rounded-lg mr-3 hover:bg-gray-300"
+                            >
+                                Close
+                            </button>
+                            <button
+                                onClick={() => setSelectedOrder(null)}
+                                className="px-6 py-2 bg-[#43C6AC] text-white rounded-lg hover:bg-[#538a7f]"
+                            >
+                                Save Chanages
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
