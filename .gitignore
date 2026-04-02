@@ -30,6 +30,10 @@ dist/
 **/dist/
 dist-ssr/
 *.local
+# Dependencies on the admin side
+admin/node_modules/
+admin/dist/
+admin/.env
 
 # Secrets - Protect your Stripe and JWT keys everywhere
 .env
@@ -43,3 +47,5 @@ dist-ssr/
 notes.txt
 dummydata.js
 dummystyles.js
+admin/src/assets/dummydata.js
+admin/src/assets/dummystyles.js
