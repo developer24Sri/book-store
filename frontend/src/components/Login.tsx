@@ -21,21 +21,50 @@ const Login = () => {
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!formData.email || !formData.password) {
-      setToast({ visible: true, message: "All Fields are rewuired", type: "error" })
-      return
+
+    const { email, password } = formData;
+
+    if (!email.trim() || !password.trim()) {
+      setToast({
+        visible: true,
+        message: "All fields are required.",
+        type: "error"
+      })
+      return;
     }
     setIsSubmitting(true);
-    try {
-      localStorage.setItem("authToken", "demo-token");
-      setToast({ visible: true, message: "Logged in successfully", type: "success" })
-      setTimeout(() => navigate("/"), 2000);
-    }
-    catch {
-      setToast({ visible: true, message: "Log in failed", type: "error" })
-    }
 
-    finally {
+    try {
+      const res = await fetch("http://localhost:4000/api/user/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, password }),
+      })
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Something went wrong!");
+      }
+
+      //save token in localstorage:
+      localStorage.setItem("authToken", data.token);
+      setToast({
+        visible: true,
+        message: "Login Successfully",
+        type: "success",
+      })
+
+      setTimeout(() => navigate("/"), 1000);
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : "An unexpected error occurred!";
+      setToast({
+        visible: true,
+        message: errorMsg,
+        type: "error"
+      })
+    } finally {
       setIsSubmitting(false);
     }
   }
@@ -45,7 +74,7 @@ const Login = () => {
     setToast({ visible: true, message: "Signed out successfully", type: "success" })
   }
 
-  const isLoggedIn = localStorage.getItem("auth-token");
+  const isLoggedIn = localStorage.getItem("authToken");
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
@@ -130,7 +159,7 @@ const Login = () => {
               Go to HomePage
             </button>
             <button onClick={handleSignOut} className="w-full text-gray-600 py-3 rounded-lg border hover:bg-gray-50 transition-colors">
-              Sign Out 
+              Sign Out
             </button>
           </div>
         )}

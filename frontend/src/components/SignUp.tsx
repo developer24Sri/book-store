@@ -20,18 +20,52 @@ const SignUp = () => {
     }
   }, [toast, navigate])
 
-  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = async(e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { username, email, password } = formData;
-    if (!username.trim() || !email.trim() || !password.trim()) {
-      setToast({ visible: true, message: "All Fields required", type: "error" })
+    const {username, email, password} = formData;
+    if(!username.trim() || !email.trim() || !password.trim()) {
+      setToast({
+        visible: true,
+        message: "All fields are required!",
+        type: "error"
+      });
       return;
     }
-    setToast({ visible: true, message: "Creating account...", type: "info" })
-    setTimeout(() => {
-      setToast({ visible: true, message: "Account created!", type: "success" })
-    }, 2000)
+
+    setToast({
+      visible: true,
+      message: "Creating Account...",
+      type: "info"
+    })
+
+    try {
+      const res = await fetch("http://localhost:4000/api/user/register", {
+        method: "POST",
+        headers: {
+          "Content-Type":"application/json"
+        },
+        body: JSON.stringify({username, email, password}),
+      })
+      const data = await res.json();
+
+      if(!res.ok) {
+        throw new Error(data.message || "Something went wrong!");
+      }
+
+      setToast({
+        visible: true,
+        message: "Account Created...",
+        type: "success",
+      })
+    } catch(error) {
+      const errorMessage = error instanceof Error ? error.message: "An unexpected error occurred!"
+      setToast({
+        visible: true,
+        message: errorMessage,
+        type: "error",
+      })
+    }
   }
 
   return (

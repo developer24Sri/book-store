@@ -1,5 +1,6 @@
 import { ChevronLeft, ChevronRight, Minus, Plus, ShoppingCart, Star } from "lucide-react"
-import { useRef } from "react"
+import { useEffect, useRef, useState } from "react"
+import axios from "axios"
 import { useCart } from "../CartContext/useCart";
 import Book1 from "../assets/images/Book1.png"
 import Book2 from "../assets/images/Book2.png"
@@ -10,12 +11,34 @@ import Book6 from "../assets/images/Book6.png"
 import Book7 from "../assets/images/Book7.png"
 import Book8 from "../assets/images/Book8.png"
 
-
+const API_BASE = "http://localhost:4000"
 
 const OurBestSeller = () => {
 
     const scrollRef = useRef<HTMLDivElement>(null);
     const { state, dispatch } = useCart();
+    const [books, setBooks] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    //fetch books from server:
+    useEffect(() => {
+        const fetchBooks = async() => {
+            setLoading(true);
+            try {
+                const res = await axios.get(`${API_BASE}api/book`);
+                setBooks(Array.isArray(res.data) ? res.data : res.data.books || []);
+            } catch(error) {
+                if(axios.isAxiosError(error)) {
+                    console.error("Error fetching best books",error);
+                    setError(error.message || "Failed to fetch books");
+                }
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchBooks();
+    },[]);
 
     const inCart = (id: string | number) => state?.items?.some(item => item.id === id);
     const getQty = (id: string | number) => state?.items?.find(item => item.id === id)?.quantity || 0;
