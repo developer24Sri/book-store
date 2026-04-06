@@ -7,6 +7,8 @@ import ContactPage from "./pages/ContactPage";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import ScrollToTop from "./Utils/ScrollToTop";
+import Checkout from "./components/Checkout";
+import ProtectedRoute from "./pages/ProtectedRoute";
 
 
 
@@ -15,16 +17,21 @@ function App() {
   return (
     <>
       <ScrollToTop />
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/cart" element={<CartPage />} />
-      <Route path="/about" element={<AboutPage />} />
-      <Route path="/books" element={<BookPage />} />
-      <Route path="/contact" element={<ContactPage />} />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/books" element={<BookPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/checkout" element={
+          <ProtectedRoute>
+            <Checkout />
+          </ProtectedRoute>}
+        />
 
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<SignUp />} />
-    </Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+      </Routes>
     </>
   )
 }

@@ -1,76 +1,99 @@
 import { useCart } from "../CartContext/useCart";
 import { useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Minus, Plus, Search, ShoppingBag, Star } from "lucide-react";
-import BP1 from "../assets/images/BP1.png";
-import BP2 from "../assets/images/BP2.png";
-import BP3 from "../assets/images/BP3.png";
-import BP4 from "../assets/images/BP4.png";
-import BP5 from "../assets/images/BP5.png";
-import BP6 from "../assets/images/BP6.png";
-import BP7 from "../assets/images/BP7.png";
-import BP8 from "../assets/images/BP8.png";
-import BP9 from "../assets/images/BP9.png";
-import BP10 from "../assets/images/BP10.png";
-import BP11 from "../assets/images/BP11.png";
-import BP12 from "../assets/images/BP12.png";
-import BP13 from "../assets/images/BP13.png";
-import BP14 from "../assets/images/BP14.png";
-import BP15 from "../assets/images/BP15.png";
-import BP16 from "../assets/images/BP16.png";
+import axios from "axios";
 
-interface Book {
+const API_BASE = "http://localhost:4000"
+
+export interface Book {
+  _id: string | number;
   id: number;
   title: string;
   author: string;
   price: number;
   image: string;
+  description: string;
+  cardBg?: string;
   rating?: number;
   category?: string;
-  description: string;
 }
 
 const Books = () => {
 
-  const { state, dispatch } = useCart();
+  const { state, addToCart, updateCartItem, removeFromCart } = useCart();
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search);
   const searchFromURL = queryParams.get("search") || "";
-
+  const [books, setBooks] = useState<Book[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState(searchFromURL);
   const [sortBy, setSortBy] = useState("title");
   const [filterCategory, setFilterCategory] = useState("all");
 
-  const books = [
-    { id: 1, image: BP1, title: "The Silent Echo", author: "Sarah Mitchell", price: 205, rating: 4.5, category: "Mystery", description: "A haunting tale of secrets and revelations that echo through time." },
-    { id: 2, image: BP2, title: "Digital Fortress", author: "James Cooper", price: 190, rating: 4.2, category: "Thriller", description: "In the age of digital warfare, no secret is safe from discovery." },
-    { id: 3, image: BP3, title: "The Last Orbit", author: "Emily Zhang", price: 202, rating: 4.7, category: "Sci-Fi", description: "Humanity's final journey among the stars holds unexpected truths." },
-    { id: 4, image: BP4, title: "Beyond the Stars", author: "Michael Chen", price: 209, rating: 4.3, category: "Sci-Fi", description: "An epic space odyssey that challenges our understanding of existence." },
-    { id: 5, image: BP5, title: "Mystic River", author: "Dennis Lehane", price: 180, rating: 4.8, category: "Drama", description: "A powerful story of friendship, trauma, and the price of secrets." },
-    { id: 6, image: BP6, title: "The Alchemist", author: "Paulo Coelho", price: 160, rating: 4.9, category: "Philosophy", description: "A mystical journey of self-discovery and the pursuit of dreams." },
-    { id: 7, image: BP7, title: "Atomic Habits", author: "James Clear", price: 203, rating: 4.6, category: "Self-Help", description: "Transform your life through the power of tiny, consistent changes." },
-    { id: 8, image: BP8, title: "Thinking, Fast and Slow", author: "Daniel Kahneman", price: 219, rating: 4.4, category: "Psychology", description: "Explore the two systems that drive the way we think and make decisions." },
-    { id: 9, title: "The Design Of Books", author: "Debbie Bern", price: 379, description: "A Gothic tale of science gone wrong and its consequences...", image: BP9 },
-    { id: 10, title: "The Crossing", author: "Jason Mott", price: 425, description: "A psychological exploration of guilt and redemption...", image: BP10 },
-    { id: 11, title: "The Phoenix Of Destiny", author: "Geronimo Stilton", price: 499, description: "A fantasy adventure through Middle-earth...", image: BP11 },
-    { id: 12, title: "The Author", author: "Raj Siddhi", price: 399, description: "A dystopian vision of a scientifically engineered society...", image: BP12 },
-    { id: 13, title: "The Doctor", author: "Oscar Patton", price: 549, description: "An epic journey through Hell, Purgatory, and Paradise...", image: BP13 },
-    { id: 14, title: "Darkness Gathers", author: "Emma Elliot", price: 325, description: "A turbulent story of passion and revenge on the Yorkshire moors...", image: BP14 },
-    { id: 15, title: "Gitanjali", author: "RabindraNath Tagore", price: 449, description: "The epic poem about the Trojan War and Achilles' rage...", image: BP15 },
-    { id: 16, title: "The Unwilling", author: "John Hart", price: 399, description: "The adventures of a nobleman who imagines himself a knight...", image: BP16 }
-  ]
+  useEffect(() => {
+    const fetchBooks = async () => {
+      setLoading(true);
 
-  const isInCart = (id: string | number) => state?.items?.some(item => item.id === id && item.source === "booksPage");
-  const getCartQty = (id: string | number) => state?.items?.find(item => item.id === id && item.source === "booksPage")?.quantity || 0;
 
-  const handleAddToCart = (book: Book) => dispatch({ type: "ADD_ITEM", payload: { ...book, quantity: 1, source: "booksPage" } })
-  const handleIncrement = (id: string | number) => dispatch({ type: "INCREMENT", payload: { id, source: "booksPage" } })
-  const handleDecrement = (id: string | number) => dispatch({ type: "DECREMENT", payload: { id, source: "booksPage" } })
+      try {
+        const res = await axios.get(`${API_BASE}/api/book`);
+        const data = res.data;
+
+        const list = Array.isArray(data) ? data : data.books || [];
+        setBooks(list);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.error("Error Loading Books", error);
+          setError(error.message || "Failed to load books!");
+        }
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchBooks();
+  }, []);
+
+  const isInCart = (id: string | number) => state?.items?.some(item => item.id === id);
+  const getCartQty = (id: string | number) => state?.items?.find(item => item.id === id)?.quantity || 0;
+
+  const handleAddToCart = (book: Book) => {
+    addToCart({ id: book._id, source: "book-list", title: book.title, author: book.author, image: book.image, price: book.price, quantity: 1 });
+  }
+  
+  // 3. Increment (Using the new object-based argument)
+const handleIncrement = (book: Book) => {
+  const newQty = getCartQty(book._id) + 1;
+  updateCartItem({
+    id: book._id,
+    source: "book-list",
+    quantity: newQty
+  });
+};
+
+// 4. Decrement (Handling removal at 1)
+const handleDecrement = (book: Book) => {
+  const currentQty = getCartQty(book._id);
+  if (currentQty <= 1) {
+    removeFromCart({ id: book._id, source: "book-list" });
+  } else {
+    updateCartItem({
+      id: book._id,
+      source: "book-list",
+      quantity: currentQty - 1
+    });
+  }
+};
+
 
   const filteredBook = books.filter(book => {
     const matchCategory = filterCategory === "all" || book.category === filterCategory;
     const lowerSearch = searchTerm.toLowerCase();
-    const matchSearch = searchTerm === "" || book.title.toLowerCase().includes(lowerSearch) || book.author.toLowerCase().includes(lowerSearch);
+    const matchSearch =
+      !searchTerm ||
+      book.title.toLowerCase().includes(lowerSearch) ||
+      book.author.toLowerCase().includes(lowerSearch);
     return matchCategory && matchSearch;
   })
 
@@ -78,12 +101,15 @@ const Books = () => {
     switch (sortBy) {
       case "price-low": return a.price - b.price
       case "price-high": return b.price - a.price
-      case "rating": return (b.rating ?? 0) - (a.rating ?? 0)
+      case "rating": return (b.rating || 0) - (a.rating || 0)
       default: return a.title.localeCompare(b.title, undefined, { sensitivity: "base", numeric: true })
     }
   })
 
   const categories = ["all", ...new Set(books.map(book => book.category).filter(Boolean))]
+
+  if (loading) return <div className="">Loading Best sellers...</div>
+  if (error) return <div className="">{error}</div>
 
 
   return (
@@ -139,13 +165,13 @@ const Books = () => {
         </div>
         <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
           {sortedBooks.map(book => {
-            const inCart = isInCart(book.id);
-            const qty = getCartQty(book.id)
+            const inCart = isInCart(book._id);
+            const qty = getCartQty(book._id)
 
             return (
-              <div className="group bg-white/90 backdrop-blur-sm rounded-xl md:rounded-2xl p-4 md:p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+              <div key={book._id} className="group bg-white/90 backdrop-blur-sm rounded-xl md:rounded-2xl p-4 md:p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                 <div className="relative aspect-square mb-4 md:mb-6 overflow-hidden rounded-lg md:rounded-xl">
-                  <img src={book.image} alt={book.title} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300" />
+                  <img src={`${API_BASE}/${book.image}`} alt={book.title} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300" />
                 </div>
                 <h3 className="text-lg md:text-xl font-semibold text-gray-800 mb-1 md:mb-2">
                   {book.title}
@@ -171,11 +197,11 @@ const Books = () => {
                       </button>
                     ) : (
                       <div className="flex items-center gap-1">
-                        <button onClick={() => handleDecrement(book.id)}>
+                        <button onClick={() => handleDecrement(book)}>
                           <Minus className="w-4 h-4 text-white" />
                         </button>
                         <span>{qty}</span>
-                        <button onClick={() => handleIncrement(book.id)}>
+                        <button onClick={() => handleIncrement(book)}>
                           <Plus className="w-4 h-4 text-white" />
                         </button>
                       </div>

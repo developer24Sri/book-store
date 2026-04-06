@@ -1,106 +1,72 @@
-import { createContext, type Dispatch } from "react"
+// CartContext.ts
+import { createContext } from "react";
 
-// defining the shape of an single item:
 export interface CartItem {
-    id: number,
-    source: string | number,
-    quantity: number,
-    title: string,
-    author: string,
-    price: number,
-    image: string | { default: string },
+    id: string | number;
+    source?: string | number;
+    quantity: number;
+    title: string;
+    author: string;
+    price: number;
+    image?: string | { default: string };
 }
 
-// defining the state shape:
-interface CartState {
+export interface CartState {
     items: CartItem[];
 }
 
-// define the action types(Discriminated union):
-type CartAction =
+export type CartAction =
+    | { type: "LOAD_CART"; payload: CartItem[] }
     | { type: "ADD_ITEM"; payload: CartItem }
-    | { type: "INCREMENT"; payload: { id: string | number; source?: string | number } }
-    | { type: "DECREMENT"; payload: { id: string | number; source?: string | number } }
+    | { type: "UPDATE_ITEM"; payload: { id: string | number; source?: string | number; quantity: number } }
     | { type: "REMOVE_ITEM"; payload: { id: string | number; source?: string | number } }
+    | { type: "CLEAR_CART" };
 
 export interface CartContextType {
-    state: CartState,
-    dispatch: Dispatch<CartAction>
+    state: CartState;
+    addToCart: (product: CartItem) => Promise<void>;
+    updateCartItem: (params: { id: string | number; source?: string | number; quantity: number }) => Promise<void>;
+    removeFromCart: (params: { id: string | number; source?: string | number }) => Promise<void>;
+    clearCart: () => Promise<void>;
 }
 
 export const CartContext = createContext<CartContextType | null>(null);
 
-export const loadInitalState = (): CartState => {
-    if (typeof window !== "undefined") {
-        const saved = localStorage.getItem("cart");
-
-        try {
-            const parsed = saved ? JSON.parse(saved) : null
-            if (parsed && Array.isArray(parsed.items)) return parsed
-            return { items: [] }
-        } catch {
-            return { items: [] }
-        }
-    }
-    return { items: [] }
-}
-
 export const cartReducer = (state: CartState, action: CartAction): CartState => {
+    const isSameItem = (i: CartItem, payload: { id: string | number; source?: string | number }) =>
+        i.id === payload.id && (i.source === payload.source || (!i.source && !payload.source));
+
     switch (action.type) {
+        case "LOAD_CART": return { ...state, items: action.payload };
+
         case "ADD_ITEM": {
-            const itemToAdd = { ...action.payload, quantity: action.payload.quantity || 1 }
-            const exists = state.items.find(
-                (i) => i.id === itemToAdd.id && i.source === itemToAdd.source
-            );
+            const itemToAdd = { ...action.payload, quantity: action.payload.quantity || 1 };
+            const exists = state.items.find(i => isSameItem(i, itemToAdd));
             if (exists) {
                 return {
                     ...state,
-                    items: state.items.map((i) =>
-                        i.id === itemToAdd.id && i.source === itemToAdd.source
-                            ? { ...i, quantity: i.quantity + itemToAdd.quantity }
-                            : i
-                    ),
+                    items: state.items.map(i => isSameItem(i, itemToAdd) ? { ...i, quantity: i.quantity + itemToAdd.quantity } : i),
                 };
             }
-            return { ...state, items: [...state.items, itemToAdd] }
+            return { ...state, items: [...state.items, itemToAdd] };
         }
 
-        case "INCREMENT":
-            return {
-                ...state,
-                items: state.items.map((i) =>
-                    // Check if IDs match AND sources match
-                    i.id === action.payload.id && i.source === action.payload.source
-                        ? { ...i, quantity: i.quantity + 1 }
-                        : i
-                ),
-            };
-
-        case "DECREMENT":
+        case "UPDATE_ITEM":
             return {
                 ...state,
                 items: state.items
-                    .map((i) =>
-                        i.id === action.payload.id && i.source === action.payload.source
-                            ? { ...i, quantity: i.quantity - 1 }
-                            : i,
-                    )
-                    .filter((i) => i.quantity > 0)
-            }
+                    .map(i => isSameItem(i, action.payload) ? { ...i, quantity: action.payload.quantity } : i)
+                    .filter(i => i.quantity > 0),
+            };
 
         case "REMOVE_ITEM":
             return {
                 ...state,
-                items: state.items.filter(
-                    (i) => !(i.id === action.payload.id &&
-                        i.source === action.payload.source
-                    ),
-                )
-            }
+                items: state.items.filter(i => !isSameItem(i, action.payload)),
+            };
 
-        default:
-            return state
+        case "CLEAR_CART": return { ...state, items: [] };
+
+        default: return state;
     }
-
-}
-
+};

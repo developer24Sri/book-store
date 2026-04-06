@@ -1,27 +1,50 @@
 import { ArrowRight, BookOpen, Minus, Plus, ShoppingBag, Trash } from "lucide-react"
 import { useCart } from "../CartContext/useCart"
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import type { CartItem } from "../CartContext/CartContext";
+import axios from "axios";
+
+const API_BASE = "http://localhost:4000"
+const IMG_BASE = API_BASE.replace("/api", "");
 
 const Cart = () => {
 
-    const { state, dispatch } = useCart();
+    const { state, updateCartItem, removeFromCart } = useCart();
     const total = state.items.reduce((sum, i) => sum + i.price * i.quantity, 0)
 
-    useEffect(() => {
-        localStorage.setItem("cart", JSON.stringify(state))
-    }, [state])
+    const [images, setImages] = useState<Record<string, string>>({});
 
-    const getImageSource = (item: CartItem) => {
-        if (typeof item.image === "string") return item.image
-        return item.image?.default
+    useEffect(() => {
+        axios.get(`${API_BASE}/book`)
+            .then((res) => {
+                const map: Record<string, string> = {};
+                const books = Array.isArray(res.data) ? res.data : res.data.books;
+                books?.forEach((book:any) => {
+                    if(book._id && book.image) {
+                        map[book._id] = book.image;
+                    }
+                })
+                console.log("Images key map:", Object.keys(map));
+                setImages(map);
+            })
+            .catch((err) => console.error("Failed to load books.", err));
+    }, []);
+
+    const getImageSrc = (item: CartItem) => {
+        // If the item already has an image string from the normalized API, use it
+        if (typeof item.image === 'string' && item.image.startsWith('http')) return item.image;
+
+        const relPath = images[item.id as string];
+        return relPath ? `${IMG_BASE}${relPath}` : 'placeholder-image-url';
     }
 
+
+
     // increasing decreasing and removing:
-    const inc = (item: CartItem) => dispatch({ type: "INCREMENT", payload: { id: item.id, source: item.source } })
-    const dec = (item: CartItem) => dispatch({ type: "DECREMENT", payload: { id: item.id, source: item.source } })
-    const remove = (item: CartItem) => dispatch({ type: "REMOVE_ITEM", payload: { id: item.id, source: item.source } })
+    const inc = (item: CartItem) => updateCartItem({ id: item.id, source: item.source, quantity: item.quantity + 1 });
+    const dec = (item: CartItem) => updateCartItem({ id: item.id, source: item.source, quantity: item.quantity - 1 });
+    const remove = (item: CartItem) => removeFromCart({ id: item.id, source: item.source });
 
     return (
         <div className="min-h-screen bg-gray-50 pt-24 pb-12 px-4 sm:px-6 lg:px-8">
@@ -53,7 +76,7 @@ const Cart = () => {
                             {state.items.map((item) => (
                                 <div key={`${item.source ?? 'default'}-${item.id}`} className="bg-white rounded-lg md:rounded-xl p-4 md:p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
                                     <div className="flex gap-4 md:gap-6">
-                                        <img src={getImageSource(item)} alt={item?.title} className="w-16 h-20 md:w-24 md:h-32 object-cover rounded-md md:rounded-lg border border-gray-200" />
+                                        <img src={getImageSrc(item)} alt={item?.title} className="w-16 h-20 md:w-24 md:h-32 object-cover rounded-md md:rounded-lg border border-gray-200" />
                                         <div className="flex-1">
                                             <div className="flex justify-between items-start">
                                                 <div>
@@ -117,13 +140,13 @@ const Cart = () => {
                                     <span className="text-xl md:text-2xl font-bold text-emerald-600">₹{total.toFixed(2)}</span>
                                 </div>
                             </div>
-                            <button className="w-full flex items-center justify-center gap-2 px-5 py-3 md:px-6 md:py-4 bg-linear-to-r from-[#2B5876] to-[#43C6AC] text-white rounded-lg md:rounded-xl font-semibold hover:opacity-90 transition-opacity text-sm md:text-base mb-3 md:mb-4">
+                            <Link to="/checkout" className="w-full flex items-center justify-center gap-2 px-5 py-3 md:px-6 md:py-4 bg-linear-to-r from-[#2B5876] to-[#43C6AC] text-white rounded-lg md:rounded-xl font-semibold hover:opacity-90 transition-opacity text-sm md:text-base mb-3 md:mb-4">
                                 Checkout Now
                                 <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
-                            </button>
+                            </Link>
                             <Link to="/books" className="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 md:px-6 md:py-3 rounded-lg md:rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors text-sm md:text-base">
                                 <BookOpen className="h-4 w-4 md:h-5 md:w-5" />
-                                Continue Shopping 
+                                Continue Shopping
                             </Link>
                         </div>
                     </div>
