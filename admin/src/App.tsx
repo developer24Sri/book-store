@@ -8,7 +8,7 @@ const App = () => {
     return (
         <div className="flex min-h-screen bg-gray-50">
             <Sidebar />
-            <main className="flex-1 overflow-auto">
+            <main className="flex-1 overflow-y-auto">
                 <Routes>
                     <Route path="/" element={<AddBook />} />
                     <Route path="/list-books" element={<ListBook />} />

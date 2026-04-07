@@ -38,7 +38,10 @@ const Checkout = () => {
                 const books = Array.isArray(data) ? data : data.books || [];
                 const map: Record<string, string> = {};
                 books.forEach((b: Book) => {
-                    if (b.id && b.image) map[b._id] = b.image;
+                    const bookId = b._id || b.id;
+                    if(bookId && b.image) {
+                        map[bookId] = b.image;
+                    }
                 })
                 setImages(map);
             })
@@ -243,7 +246,7 @@ const Checkout = () => {
                                                         {field.label}
                                                     </label>
                                                     <input type={field.type} name={field.name} value={formData[field.name as keyof typeof formData]} onChange={handleChange}
-                                                        className="w-full px-4 py-3 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#43C6AC] focus:border-transparent"
+                                                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#43C6AC] focus:border-transparent"
                                                         required={field.required}
                                                     />
                                                 </div>
@@ -304,7 +307,7 @@ const Checkout = () => {
                                                 <img
                                                     src={
                                                         images[item.id]
-                                                            ? `${IMG_BASE}${images[item.id]}`
+                                                            ? `${IMG_BASE}/${images[item.id]}`
                                                             : "/placeholder.png"
                                                     }
                                                     alt={item.title}

@@ -115,7 +115,7 @@ const About = () => {
                         </h2>
                         <div className="mt-6 h-1 w-24 mx-auto bg-linear-to-r from-[#43C6AC] to-[#F8FFAE] rounded-full" />
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 ga-8">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         {apteamMembers.map((member) => (
                             <div key={member.id} className="group relative bg-white/95 backdrop-blur-lg rounded-4xl p-6 shadow-2xl border border-[#43C6AC]/10 transition-transform hover:-translate-y-3">
                                 <div className="relative overflow-hidden rounded-2xl mb-6">

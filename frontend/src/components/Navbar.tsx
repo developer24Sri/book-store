@@ -67,7 +67,7 @@ const Navbar = () => {
                                 <Link key={item.name} to={item.path} className="relative group px-5 py-3.5 rounded-lg transition-all duration-300 overflow-hidden">
                                     <div className="relative z-10 flex items-center">
                                         <div className="relative">
-                                            <div className={`absolute -inset-1 bg-lineat-to-r ${item.color} rounded-full opacity-0 blur group-hover:opacity-30 transition-opacity duration-500`} />
+                                            <div className={`absolute -inset-1 bg-linear-to-r ${item.color} rounded-full opacity-0 blur group-hover:opacity-30 transition-opacity duration-500`} />
                                             <item.icon className={`relative h-5 w-5 ${isActive ? "text-white" : "text-gray-600 group-hover:text-white"} transition-colors duration-300 z-10`} />
                                         </div>
                                         <span className={`ml-2 ${isActive

@@ -103,7 +103,7 @@ const ListBook = () => {
     }
 
     return (
-        <div className="p-6 max-w-7xl mx-auto">
+        <div className="p-6 pb-32 md:pb-6 max-w-7xl mx-auto">
             <div className="text-center mb-8">
                 <h1 className="text-3xl font-bold bg-linear-to-r from-[#1A237E] to-[#43C6AC] bg-clip-text text-transparent">
                     Manage Book Inventory
@@ -113,7 +113,7 @@ const ListBook = () => {
             {/* controls */}
             <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
                 <div className="flex flex-col md:flex-row gap-4 justify-between">
-                    <div className="flex gap-1">
+                    <div className="flex gap-3">
                         <div className="relative group">
                             <div className="absolute -inset-0.5 bg-linear-to-r from-[#43C6AC] to-[#F8FFAE] rounded-lg blur opacity-0 group-hover:opacity-20" />
                             <div className="relative flex items-center">

@@ -11,21 +11,30 @@ import cartRouter from "./routes/cartRoute.ts";
 import orderRouter from "./routes/orderRoute.ts";
 
 const app = express();
-const port = 4000;
+const port = process.env.PORT || 4000;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+//origins:
+const allowedOrigins = [
+    "http://localhost:5173",
+    "http://localhost:5174",
+    process.env.FRONTEND_URL, // Add this
+    process.env.ADMIN_URL     // Add this
+];
+
 //Middleware:
 app.use(cors({
     origin: (origin, callback) => {
-        const allowedOrigins = ["http://localhost:5173", "http://localhost:5174"] //first is for user second is for us admin
+        // Allow requests with no origin (like mobile apps or curl)
         if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
-            callback(new Error("Not allowed by CORS"))
+            callback(new Error("Not allowed by CORS"));
         }
-    }, credentials: true,
+    },
+    credentials: true,
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import type { CartItem } from "../CartContext/CartContext";
 import axios from "axios";
 
-const API_BASE = "http://localhost:4000"
+const API_BASE = "http://localhost:4000/api"
 const IMG_BASE = API_BASE.replace("/api", "");
 
 const Cart = () => {
@@ -36,7 +36,7 @@ const Cart = () => {
         if (typeof item.image === 'string' && item.image.startsWith('http')) return item.image;
 
         const relPath = images[item.id as string];
-        return relPath ? `${IMG_BASE}${relPath}` : 'placeholder-image-url';
+        return relPath ? `${IMG_BASE}/${relPath.replace(/^\//, '')}` : 'placeholder-url';
     }
 
 
