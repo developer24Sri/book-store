@@ -1,11 +1,42 @@
-import mongoose from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
 
-export interface IOrder extends Document {
+// 1. Base interface for the DATA
+export interface IOrder {
+    _id: any; // We keep it 'any' or 'string' for the React Frontend's sake
+    orderId: string;
+    user: mongoose.Types.ObjectId;
+    shippingAddress: {
+        fullName: string;
+        email: string;
+        phoneNumber: string;
+        street: string;
+        city: string;
+        state: string;
+        zipCode: string;
+    };
+    book: Array<{
+        book: mongoose.Types.ObjectId;
+        title: string;
+        author: string;
+        image?: string;
+        price: number;
+        quantity: number;
+    }>;
+    shippingCharge: number;
     totalAmount: number;
     taxAmount: number;
-    shippingCharge: number;
     finalAmount: number;
+    paymentMethod: "Online Payment" | "Cash on Delivery";
+    paymentStatus: "Unpaid" | "Paid";
+    orderStatus: "Pending" | "Processing" | "Shipped" | "Delivered" | "Cancelled";
+    placedAt: Date;
+    createdAt: Date;
+    updatedAt: Date;
 }
+
+// 2. The Document interface for MONGOOSE
+// We use Omit to remove the conflicting _id from IOrder before merging
+export interface IOrderDocument extends Omit<IOrder, "_id">, Document { }
 
 const addressSchema = new mongoose.Schema({
     fullName: { type: String, required: true },
@@ -82,5 +113,12 @@ orderSchema.pre<IOrder>("save", async function () {
     }
 })
 
-const Order = mongoose.models.Order || mongoose.model<IOrder>("Order", orderSchema);
+// Use IOrderDocument here
+orderSchema.pre<IOrderDocument>("save", async function () {
+    if (this.totalAmount != null && this.taxAmount != null) {
+        this.finalAmount = this.totalAmount + this.taxAmount + (this.shippingCharge || 0);
+    }
+});
+
+const Order = mongoose.models.Order || mongoose.model<IOrderDocument>("Order", orderSchema);
 export default Order;

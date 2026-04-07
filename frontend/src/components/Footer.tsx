@@ -73,7 +73,7 @@ const Footer = () => {
             <div className="space-y-3">
               <div className="flex items-start text-gray-600 text-sm">
                 <MapPin className="h-4 w-4 text-[#43C6AC] mr-2 mt-1 shrink-0" />
-                <span>12/53 project lane, Chennai, ch-600014</span>
+                <span>12/24 srivatsan lane, chennai, 600014</span>
               </div>
               <div className="flex items-center text-gray-600 text-sm">
                 <Phone className="h-4 w-4 text-[#43C6AC] mr-2 shrink-0" />

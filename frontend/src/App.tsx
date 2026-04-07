@@ -9,6 +9,8 @@ import SignUp from "./components/SignUp";
 import ScrollToTop from "./Utils/ScrollToTop";
 import Checkout from "./components/Checkout";
 import ProtectedRoute from "./pages/ProtectedRoute";
+import MyOrders from "./components/MyOrders";
+import VerifyPaymentPage from "./pages/VerifyPaymentPage";
 
 
 
@@ -28,6 +30,8 @@ function App() {
             <Checkout />
           </ProtectedRoute>}
         />
+        <Route path="/orders/verify" element={<VerifyPaymentPage />} />
+        <Route path="/orders" element={<MyOrders />} />
 
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />

@@ -236,7 +236,7 @@ export const getUserOrder = async (req: UserReq, res: Response) => {
     try {
         const orders = await Order
             .find({ user: req.user._id })
-            .populate("books.book")
+            .populate("book.book")
             .sort({ createdAt: -1 });
 
         res.status(200).json(orders);

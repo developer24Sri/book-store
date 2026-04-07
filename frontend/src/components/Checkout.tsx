@@ -1,19 +1,27 @@
 import { Link } from "react-router-dom"
 import Navbar from "./Navbar"
-import { ArrowLeft, CheckCircle, CreditCard, DollarSign, MapPin } from "lucide-react"
+import { ArrowLeft, CheckCircle, CreditCard, DollarSign, MapPin, ShoppingCart } from "lucide-react"
 import { useCart } from "../CartContext/useCart";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import type { Book } from "./Books";
 
-const API_BASE = "http://localhost:4000"
+interface FormField {
+    name: string;
+    label: string;
+    type: string;
+    required: boolean;
+    fullWidth?: boolean; // The '?' makes it optional
+}
+
+const API_BASE = "http://localhost:4000/api"
 const IMG_BASE = API_BASE.replace("/api", "");
 
 const Checkout = () => {
-    const { cart, clearCart } = useCart();
+    const { state: cart, clearCart } = useCart();
     const [formData, setFormData] = useState({
         name: '', email: '', phone: '', address: '',
-        city: '', state: '', zip: '', paymentMethod: 'cod'
+        city: '', state: '', zip: '', paymentMethod: 'cod', notes: "", deliveryDate: ""
     });
     const [orderPlaced, setOrderPlaced] = useState(false);
     const [orderId, setOrderId] = useState(null);
@@ -37,18 +45,18 @@ const Checkout = () => {
             .catch(err => console.error("Could not load books images", err));
     }, [])
 
-    const handleChange = (e) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
 
         setFormData(prev => ({ ...prev, [name]: value }));
     }
 
-    const calculateTotal = () => cart.items.reduce((total, item) => total + (item.price * item.quantity), 0);
+    const calculateTotal = () => cart?.items?.reduce((total, item) => total + (item.price * item.quantity), 0);
     const subtotal = calculateTotal();
     const tax = subtotal * 0.05;
     const total = subtotal + tax;
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         try {
@@ -58,7 +66,7 @@ const Checkout = () => {
             }
             // After (pick whichever property holds the book ID):
             const items = cart.items.map(item => ({
-                id: item.id || item._id,    // <-- make sure this is the Mongo _id of the Book
+                id: item._id || item?.id,    // <-- make sure this is the Mongo _id of the Book
                 name: item.title,
                 price: item.price,
                 quantity: item.quantity || 1,
@@ -100,12 +108,12 @@ const Checkout = () => {
             })
             clearCart();
 
-            if (formData.paymentMethod === "online" && data.checkoutUrl) {
-                window.location.href = data.checkoutUrl;
+            if (formData.paymentMethod === "online" && data.data.checkoutUrl) {
+                window.location.href = data.data.checkoutUrl;
                 return;
             }
 
-            setOrderId(data.order?.orderId || null);
+            setOrderId(data.data.order?.orderId || null);
             setOrderPlaced(true);
         } catch (error) {
             console.error("Order subitting error", error);
@@ -183,7 +191,7 @@ const Checkout = () => {
     ];
 
 
-    const formFields = [
+    const formFields:FormField[][] = [
         [
             { name: 'name', label: 'Full Name', type: 'text', required: true },
             { name: 'email', label: 'Email', type: 'email', required: true }
@@ -206,7 +214,7 @@ const Checkout = () => {
             <Navbar />
             <div className="min-h-screen bg-linear-to-br pt-28 from-[#43C6AC] to-[#F8FFAE] py-12">
                 <div className="container mx-auto px4">
-                    <Link to="/cart" className="inline-flex items-center text-[!1A237E] font-medium mb-6 hover:underline">
+                    <Link to="/cart" className="inline-flex items-center text-[#1A237E] font-medium mb-6 hover:underline">
                         <ArrowLeft className="w-5 h-5 mr-2" />
                         Back to Cart
                     </Link>
@@ -218,51 +226,133 @@ const Checkout = () => {
                             <form onSubmit={handleSubmit}>
                                 <div className="mb-6">
                                     <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                                        <MapPin className="w-5 h-5 mr-2 text-[#43c6ac]">
+                                        <MapPin className="w-5 h-5 mr-2 text-[#43c6ac]" />
                                             Shipping Address
-                                        </MapPin>
                                     </h3>
                                     {formFields.map((row, rowIndex) => (
                                         <div key={rowIndex} className={`grid grid-cols-1 
-                                        ${row.some((field) => filed.fullWidth)
+                                        ${row.some((field) => field.fullWidth)
                                                 ? ""
                                                 :
-                                                "md:grid-cols-2"
-                                            } gap-4 ${rowIndex > 0 ? "mt-4":""}
+                                                "md:col-span-2"
+                                            } gap-4 ${rowIndex > 0 ? "mt-4" : ""}
                                         `}>
-                                          {row.map((field) => (
-                                            <div key={field.name} className={field.fullWidth ? "col-span-full":""}>
-                                                <label className="block text-gray-700 mb-2">
-                                                    {field.label}
-                                                </label>
-                                                <input type={field.type} name={field.name} value={formData[field.name]} onChange={handleChange}
-                                                className="w-full px-4 py-3 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#43C6AC] focus:border-transparent" 
-                                                required={field.required}
-                                                />
-                                            </div>
-                                          ))}      
+                                            {row.map((field) => (
+                                                <div key={field.name} className={field.fullWidth ? "col-span-full" : ""}>
+                                                    <label className="block text-gray-700 mb-2">
+                                                        {field.label}
+                                                    </label>
+                                                    <input type={field.type} name={field.name} value={formData[field.name as keyof typeof formData]} onChange={handleChange}
+                                                        className="w-full px-4 py-3 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#43C6AC] focus:border-transparent"
+                                                        required={field.required}
+                                                    />
+                                                </div>
+                                            ))}
                                         </div>
                                     ))}
                                 </div>
                                 <div className="mb-8">
                                     <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
                                         <CreditCard className="w-5 h-5 mr-2 text[#43C6AC]" />
-                                        Payment Method 
+                                        Payment Method
                                     </h3>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                                         {paymentMethods.map(method => (
                                             <div key={method.id}>
                                                 <input type="radio" id={method.id} name="paymentMethod"
-                                                value={method.id} checked={formData.paymentMethod === method.id}
-                                                onChange={handleChange}
-                                                className="hidden"
+                                                    value={method.id} checked={formData.paymentMethod === method.id}
+                                                    onChange={handleChange}
+                                                    className="hidden"
                                                 />
-                                                <label></label>
+                                                <label htmlFor={method.id} className={`block p-4 border-2 rounded-lg cursor-pointer 
+                                                    ${formData.paymentMethod === method.id
+                                                        ?
+                                                        "border-[#43C6AC] bg-[#43C6AC]/10"
+                                                        :
+                                                        "border-gray-300 hover:border-gray-400"
+                                                    }`}>
+                                                    <div className="flex items-center">
+                                                        <method.icon className={`w-6 h-6 mr-3 ${method.iconColor}`} />
+                                                        <div className="flex items-center">
+                                                            <span className="block font-medium text-gray-900">{method.label}</span>
+                                                            <span className="block text-sm text-gray-600">{method.description}</span>
+                                                        </div>
+                                                    </div>
+                                                </label>
                                             </div>
                                         ))}
                                     </div>
                                 </div>
+                                <button type="submit" className="w-full py-4 bg-linear-to-r from-[#1A237E] to-[#43C6AC] text-white font-bold rounded-lg hover:opacity-90 transition-opacity">
+                                    Place Order
+                                </button>
                             </form>
+                        </div>
+                        {/* Right side */}
+                        <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8 h-fit">
+                            <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                                <ShoppingCart className="w-6 h-6 mr-2 text-[#43C6AC]" />
+                                Order Summary
+                            </h2>
+
+                            <div className="border-b border-gray-200 pb-4 mb-4">
+                                <h3 className="text-lg font-semibold text-gray-800 mb-3">Your Items</h3>
+                                <div className="space-y-4">
+                                    {cart?.items.length > 0 ? (
+                                        cart?.items?.map(item => (
+                                            <div key={item.id} className="flex items-center">
+                                                <img
+                                                    src={
+                                                        images[item.id]
+                                                            ? `${IMG_BASE}${images[item.id]}`
+                                                            : "/placeholder.png"
+                                                    }
+                                                    alt={item.title}
+                                                    className="w-16 h-16 object-cover rounded-xl mr-4"
+                                                />
+                                                <div className="flex-1">
+                                                    <h4 className="font-medium text-gray-900">{item.title}</h4>
+                                                    <p className="text-gray-600 text-sm">by {item.author}</p>
+                                                </div>
+                                                <div className="ml-4 text-right">
+                                                    <p className="font-medium text-gray-900">₹{item.price.toFixed(2)}</p>
+                                                    <p className="text-gray-600 text-sm">Qty: {item.quantity}</p>
+                                                </div>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <p className="text-gray-600">Your cart is empty</p>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="border-b border-gray-200 pb-6 mb-6">
+                                <h3 className="text-lg font-semibold text-gray-800 mb-3">Order Details</h3>
+                                <div className="space-y-3">
+                                    {[
+                                        { label: 'Subtotal', value: `₹${subtotal?.toFixed(2)}` },
+                                        { label: 'Shipping', value: 'FREE' },
+                                        { label: 'Tax', value: `₹${tax.toFixed(2)}` }
+                                    ].map((item, i) => (
+                                        <div key={i} className="flex justify-between">
+                                            <span className="text-gray-600">{item.label}</span>
+                                            <span className="text-gray-900">{item.value}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="flex justify-between items-center mb-8">
+                                <span className="text-lg font-bold text-gray-800">Total</span>
+                                <span className="text-xl font-bold text-[#1A237E]">₹{total.toFixed(2)}</span>
+                            </div>
+
+                            <div className="bg-linear-to-r from-[#43C6AC]/10 to-[#F8FFAE]/10 rounded-xl p-4">
+                                <h3 className="font-medium text-gray-800 mb-2">Delivery Estimate</h3>
+                                <p className="text-gray-600">
+                                    Your order will be delivered within 3-5 business days after processing.
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -84,7 +84,7 @@ const HomeAbout = () => {
         <div className="h-1 w-20 mx-auto bg-linear-to-r from-[#43C6AC] to-[#F8FFAE] rounded-full">
         </div>
         <p className="mt-4 text-gray-600 text-center max-w-2xl mx-auto">
-          Handpicked recomendations from our literary expoerts that you won't want to miss.
+          Handpicked recomendations from our literary experts that you won't want to miss.
         </p>
       </div>
 
