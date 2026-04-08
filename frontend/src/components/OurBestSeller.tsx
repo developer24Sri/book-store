@@ -1,10 +1,11 @@
 import { ChevronLeft, ChevronRight, Minus, Plus, ShoppingCart, Star } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 import axios from "axios"
+import { API_BASE } from "../apiConfig";
 import type { Book } from "./Books";
 import { useCart } from "../CartContext/useCart";
 
-const API_BASE = "http://localhost:4000"
+// const API_BASE = "http://localhost:4000"
 
 
 const OurBestSeller = () => {

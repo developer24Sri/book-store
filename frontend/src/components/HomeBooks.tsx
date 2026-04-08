@@ -3,9 +3,10 @@ import { useCart } from "../CartContext/useCart"
 import { Link } from "react-router-dom"
 import { useEffect, useState } from "react"
 import axios from "axios"
+import { API_BASE } from "../apiConfig"
 import type { Book } from "./Books"
 
-const API_BASE = "http://localhost:4000"
+// const API_BASE = "http://localhost:4000"
 
 const HomeBooks = () => {
 

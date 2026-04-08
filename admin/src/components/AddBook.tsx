@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import {API_BASE} from "../apiConfig";
 import { BookPlus, Star } from "lucide-react";
 
 
@@ -20,7 +21,6 @@ interface MessageState {
     text: string | null
 }
 
-const API_BASE = `http://localhost:4000`
 
 
 const initialFormData = {

@@ -1,11 +1,12 @@
 import axios from "axios";
+import {API_BASE} from "../apiConfig";
 import { useEffect, useState } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 const VerifyPaymentPage = () => {
 
     const token = localStorage.getItem("authToken");
-    const apiBase = "http://localhost:4000";
+    
 
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
@@ -19,7 +20,7 @@ const VerifyPaymentPage = () => {
     useEffect(() => {
         if (!session_id) return;
 
-        axios.get(`${apiBase}/api/order/confirm`, {
+        axios.get(`${API_BASE}/api/order/confirm`, {
             params: { session_id },
             headers: token ? { Authorization: `Bearer ${token}` } : {},
         })
@@ -31,7 +32,7 @@ const VerifyPaymentPage = () => {
                 console.error("Confirmation error:", err);
                 setStatusMsg(err.response.data.message || "Error confirming payment. Please contact support")
             })
-    }, [session_id, apiBase, navigate, token]);
+    }, [session_id, API_BASE, navigate, token]);
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">

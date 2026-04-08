@@ -1,6 +1,7 @@
 import { AlertCircle, BookOpen, CheckCircle, ChevronDown, ChevronUp, Clock, CreditCard, DollarSign, Edit, Mail, MapPin, Package, Phone, RefreshCw, Search, Truck, User, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
+import { API_BASE } from "../apiConfig";
 
 interface OrderItem {
     _id: string;
@@ -39,7 +40,7 @@ interface Order {
 
 type SortKey = "id" | "customer" | "date" | "amount";
 
-const API_BASE = `http://localhost:4000`
+// const API_BASE = `http://localhost:4000`
 
 const statusOptions = [
     {

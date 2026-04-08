@@ -1,6 +1,7 @@
 // CartProvider.tsx
 import { useReducer, useEffect, type ReactNode } from "react";
 import axios from "axios";
+import { API_BASE } from "../apiConfig";
 import { CartContext, cartReducer, type CartItem, type CartState } from "./CartContext";
 
 
@@ -21,7 +22,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
             const token = localStorage.getItem("authToken");
             if (!token) return;
             try {
-                const { data } = await axios.get("http://localhost:4000/api/cart", {
+                const { data } = await axios.get(`${API_BASE}/api/cart`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 const normalized: CartItem[] = data.cart.items.map((item: any) => ({
@@ -53,7 +54,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         });
         if (token) {
             try {
-                await axios.post("http://localhost:4000/api/cart/add",
+                await axios.post(`${API_BASE}/api/cart/add`,
                     { bookId: product.id, quantity: qty },
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
@@ -67,7 +68,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         const token = localStorage.getItem("authToken");
         if (token) {
             try {
-                await axios.put("http://localhost:4000/api/cart/update",
+                await axios.put(`${API_BASE}/api/cart/update`,
                     { bookId: id, quantity },
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
@@ -80,7 +81,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         const token = localStorage.getItem("authToken");
         if (token) {
             try {
-                await axios.delete(`http://localhost:4000/api/cart/remove/${id}`, {
+                await axios.delete(`${API_BASE}/api/cart/remove/${id}`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
             } catch (err) { console.error("Server remove failed:", err); }
@@ -92,7 +93,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         const token = localStorage.getItem("authToken");
         if (token) {
             try {
-                await axios.delete("http://localhost:4000/api/cart/clear", {
+                await axios.delete(`${API_BASE}/api/cart/clear`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
             } catch (err) { console.error("Server clear failed:", err); }

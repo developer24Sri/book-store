@@ -1,4 +1,5 @@
 import axios from "axios";
+import { API_BASE } from "../apiConfig";
 import type { IOrder } from "../../../backend/models/orderModel";
 import { ArrowLeft, CheckCircle, ChevronDown, ChevronUp, Clock, CreditCard, DollarSign, MapPin, Package, Truck, X, XCircle } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
@@ -16,10 +17,7 @@ interface StatusBadgeProps {
     status: string;
 }
 
-
-
-
-const API_BASE = "http://localhost:4000"
+// const API_BASE = "http://localhost:4000"
 
 // Status badge definitions
 const statusOptions = [
@@ -116,8 +114,8 @@ const MyOrders = () => {
         if (!sortConfig.key) return orders;
         const currentKey = sortConfig.key;
         return [...orders].sort((a, b) => {
-            let aVal: any = a[currentKey],
-                bVal: any = b[currentKey];
+            let aVal: string | Date = a[currentKey],
+                bVal: string | Date = b[currentKey];
             if (sortConfig.key === "placedAt") {
                 aVal = new Date(aVal);
                 bVal = new Date(bVal);

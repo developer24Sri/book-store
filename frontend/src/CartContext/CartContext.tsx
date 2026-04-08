@@ -2,7 +2,7 @@
 import { createContext } from "react";
 
 export interface CartItem {
-    _id: string | number,
+    _id?: string | number,
     id: string | number;
     source?: string | number;
     quantity: number;

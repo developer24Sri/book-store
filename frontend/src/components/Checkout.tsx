@@ -4,6 +4,7 @@ import { ArrowLeft, CheckCircle, CreditCard, DollarSign, MapPin, ShoppingCart } 
 import { useCart } from "../CartContext/useCart";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { API_BASE } from "../apiConfig";
 import type { Book } from "./Books";
 
 interface FormField {
@@ -14,8 +15,8 @@ interface FormField {
     fullWidth?: boolean; // The '?' makes it optional
 }
 
-const API_BASE = "http://localhost:4000/api"
-const IMG_BASE = API_BASE.replace("/api", "");
+const GIVEN_API_BASE = `${API_BASE}/api`;
+const IMG_BASE = GIVEN_API_BASE.replace("/api", "");
 
 const Checkout = () => {
     const { state: cart, clearCart } = useCart();

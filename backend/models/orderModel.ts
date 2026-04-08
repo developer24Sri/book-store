@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Document} from "mongoose";
 
 // 1. Base interface for the DATA
 export interface IOrder {

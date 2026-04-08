@@ -3,8 +3,9 @@ import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Minus, Plus, Search, ShoppingBag, Star } from "lucide-react";
 import axios from "axios";
+import { API_BASE } from "../apiConfig";
 
-const API_BASE = "http://localhost:4000"
+// const API_BASE = "http://localhost:4000"
 
 export interface Book {
   _id: string | number;

@@ -1,6 +1,7 @@
 import { ArrowLeft, Mail, User, Lock, EyeOff, Eye } from "lucide-react";
 import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom";
+import {API_BASE} from "../apiConfig";
 
 const SignUp = () => {
 
@@ -40,7 +41,7 @@ const SignUp = () => {
     })
 
     try {
-      const res = await fetch("http://localhost:4000/api/user/register", {
+      const res = await fetch(`${API_BASE}/api/user/register`, {
         method: "POST",
         headers: {
           "Content-Type":"application/json"
