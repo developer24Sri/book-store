@@ -1,6 +1,5 @@
 import axios from "axios";
 import { API_BASE } from "../apiConfig";
-import type { IOrder } from "../../../backend/models/orderModel";
 import { ArrowLeft, CheckCircle, ChevronDown, ChevronUp, Clock, CreditCard, DollarSign, MapPin, Package, Truck, X, XCircle } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import Footer from "./Footer";
@@ -15,6 +14,33 @@ interface SortConfig {
 
 interface StatusBadgeProps {
     status: string;
+}
+
+// Add this in place of the backend import
+interface IOrder {
+    _id: string;
+    orderId: string;
+    placedAt: string | Date;
+    finalAmount: number;
+    totalAmount: number;
+    shippingCharge: number;
+    taxAmount: number;
+    paymentMethod: "Online Payment" | "Cash on Delivery";
+    paymentStatus: string;
+    orderStatus: string;
+    shippingAddress: {
+        street: string;
+        city: string;
+        state: string;
+        zipCode: string;
+    };
+    book: Array<{
+        title: string;
+        author: string;
+        image: string;
+        quantity: number;
+        price: number;
+    }>;
 }
 
 // const API_BASE = "http://localhost:4000"
@@ -113,12 +139,13 @@ const MyOrders = () => {
     const sortedOrders: IOrder[] = useMemo(() => {
         if (!sortConfig.key) return orders;
         const currentKey = sortConfig.key;
+        
         return [...orders].sort((a, b) => {
-            let aVal: string | Date = a[currentKey],
-                bVal: string | Date = b[currentKey];
+            let aVal: any = a[currentKey],
+                bVal: any = b[currentKey];
             if (sortConfig.key === "placedAt") {
-                aVal = new Date(aVal);
-                bVal = new Date(bVal);
+                aVal = new Date(aVal).getTime();
+                bVal = new Date(bVal).getTime();
             }
             if (aVal > bVal) return sortConfig.direction === "asc" ? 1 : -1;
             if (aVal < bVal) return sortConfig.direction === "asc" ? -1 : 1;
