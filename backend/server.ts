@@ -18,6 +18,7 @@ const __dirname = path.dirname(__filename);
 
 //origins:
 const allowedOrigins = [
+    "https://book-store-delta-tawny.vercel.app",
     "http://localhost:5173",
     "http://localhost:5174",
     process.env.FRONTEND_URL, // Add this
