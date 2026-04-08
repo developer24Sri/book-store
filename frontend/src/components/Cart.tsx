@@ -18,7 +18,7 @@ const Cart = () => {
     const [images, setImages] = useState<Record<string, string>>({});
 
     useEffect(() => {
-        axios.get(`${API_BASE}/book`)
+        axios.get(`${GIVEN_API_BASE}/book`)
             .then((res) => {
                 const map: Record<string, string> = {};
                 const books = Array.isArray(res.data) ? res.data : res.data.books;

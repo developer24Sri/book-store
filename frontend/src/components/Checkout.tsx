@@ -103,11 +103,11 @@ const Checkout = () => {
                 deliveryDate: formData.deliveryDate || '',
             };
 
-            const data = await axios.post(`${API_BASE}/order`, payload, {
+            const data = await axios.post(`${GIVEN_API_BASE}/order`, payload, {
                 headers: { Authorization: `Bearer ${token}` }
             })
             setOrderTotal(total);
-            await axios.delete(`${API_BASE}/cart/clear`, {
+            await axios.delete(`${GIVEN_API_BASE}/cart/clear`, {
                 headers: { Authorization: `Bearer ${token}` }
             })
             clearCart();
