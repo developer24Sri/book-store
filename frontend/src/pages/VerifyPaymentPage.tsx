@@ -20,7 +20,7 @@ const VerifyPaymentPage = () => {
     useEffect(() => {
         if (!session_id) return;
 
-        axios.get(`${API_BASE}/order/confirm`, {
+        axios.get(`${API_BASE}/api/order/confirm`, {
             params: { session_id },
             headers: token ? { Authorization: `Bearer ${token}` } : {},
         })

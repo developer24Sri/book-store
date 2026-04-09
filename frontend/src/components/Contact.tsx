@@ -45,7 +45,7 @@ const Contact = () => {
         e.preventDefault();
 
         if (!validateForm()) return;
-        const whatsappNumber = "9080100325";
+        const whatsappNumber = "9876543210";
         const textLines = [
             `Name: ${formData.name}`,
             `Email: ${formData.email}`,
